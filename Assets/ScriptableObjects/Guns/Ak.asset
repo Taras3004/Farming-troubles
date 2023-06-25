@@ -15,9 +15,10 @@ MonoBehaviour:
   weaponPrefab: {fileID: 538714673520480298, guid: 96840bcd508a5894d86c7f6ea25fbe7c, type: 3}
   pickableWeaponPrefab: {fileID: 2053890622955252579, guid: 5310a784ac14d7247a8ed1436f234ee4, type: 3}
   weaponStats:
-    damage: 1
-    capacity: 30
-    maxBullets: 150
+    damage: 2
+    capacity: 20
+    maxBullets: 60
     shotRate: 0.2
     reloadTime: 2
     playerSpeed: 0
+    spread: 5

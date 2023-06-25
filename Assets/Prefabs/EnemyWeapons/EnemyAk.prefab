@@ -5,6 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 321754761110692734, guid: 093ac584be568db419ec26afb0cce6d1, type: 3}
@@ -83,6 +84,10 @@ PrefabInstance:
       propertyPath: shotPosition
       value: 
       objectReference: {fileID: 273721764833664671}
+    - target: {fileID: 8765369542473432724, guid: 093ac584be568db419ec26afb0cce6d1, type: 3}
+      propertyPath: speed
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8933854731039766222, guid: 093ac584be568db419ec26afb0cce6d1, type: 3}
       propertyPath: m_Color.g
       value: 0.28627452
@@ -92,6 +97,12 @@ PrefabInstance:
       value: 0.28433526
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6094082378167955829, guid: 093ac584be568db419ec26afb0cce6d1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6776873808458305553}
   m_SourcePrefab: {fileID: 100100000, guid: 093ac584be568db419ec26afb0cce6d1, type: 3}
 --- !u!4 &273721764833664671 stripped
 Transform:

@@ -32,6 +32,7 @@ public class Bullet : MonoBehaviour
         if (collision.TryGetComponent(out Obstacle obstacle))
         {
             OnObstacleHit?.Invoke(this, EventArgs.Empty);
+            obstacle.Interact();
             Destroy(gameObject);
         }
         else if (collision.TryGetComponent(out EnemyHealthHandler enemy))

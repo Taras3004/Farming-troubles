@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Bullet))]
@@ -18,6 +19,6 @@ public class BulletVisual : MonoBehaviour
     private void Bullet_OnObstacleHit(object sender, System.EventArgs e)
     {
         ParticleSystem particle = Instantiate(obstacleHitParticle, transform.position, Quaternion.identity);
-        Destroy(particle, particle.main.duration);
+        particle.AddComponent<SelfDestroy>().Setup(particle.main.duration);
     }
 }

@@ -18,4 +18,5 @@ public struct WeaponStats
     public float shotRate;
     public float reloadTime;
     public float playerSpeed;
+    public float spread;
 }

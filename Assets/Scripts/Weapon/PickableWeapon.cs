@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PickableWeapon : MonoBehaviour
@@ -7,6 +8,11 @@ public class PickableWeapon : MonoBehaviour
     private int bulletAmount;
     private int bulletAmountMax;
 
+    private void Awake()
+    {
+        bulletAmount = weaponSO.weaponStats.capacity;
+        bulletAmountMax = weaponSO.weaponStats.maxBullets;
+    }
 
     public void SetupBulletAmount(int bulletAmount, int bulletAmountMax)
     {

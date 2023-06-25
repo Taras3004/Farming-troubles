@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BeetrootBehaviour : EnemyPathfinder
+public class BeetrootBehaviour : EnemyBehaviourHandler
 {
     private float defaultStopDistance;
     private float decreasedStopDistance;
@@ -36,15 +36,14 @@ public class BeetrootBehaviour : EnemyPathfinder
             DecreaseEndDistance();
         }
 
-        if (isDistanceToPlayerDecreased)
-        {
-            float distanceToTarget =
-                Vector2.Distance(Tr.position, Target().position);
+        if (!isDistanceToPlayerDecreased) return;
+        
+        float distanceToTarget =
+            Vector2.Distance(Tr.position, Target().position);
 
-            if (distanceToTarget > defaultStopDistance)
-            {
-                ReturnEndDistanceToDefault();
-            }
+        if (distanceToTarget > defaultStopDistance)
+        {
+            ReturnEndDistanceToDefault();
         }
     }
 

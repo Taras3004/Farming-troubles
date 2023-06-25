@@ -5,6 +5,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
@@ -32,6 +33,14 @@ PrefabInstance:
       value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407313, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: stopDistance
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407313, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: startFollowDistance
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407313, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: decreasedEndDistance
       value: 1.5
       objectReference: {fileID: 0}
@@ -52,8 +61,12 @@ PrefabInstance:
       value: -0.101239264
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: loot
+      value: 
+      objectReference: {fileID: 6712265381154194583, guid: f07daf4e8f1a6754599dec686861aa8f, type: 3}
+    - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: maxHealth
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407319, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: bloodColor.b
@@ -133,4 +146,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3524793837484407312, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}

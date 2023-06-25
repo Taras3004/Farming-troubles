@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 433f916a7ae0ddd4680bddb1e403ce8b, type: 3}
+  m_Name: MP5
+  m_EditorClassIdentifier: 
+  weaponPrefab: {fileID: 2986616942196441412, guid: 2892d3dca5efc61459e1eb1ff5671c76, type: 3}
+  pickableWeaponPrefab: {fileID: 986625842611765878, guid: 8066f02a5d8c0cd40aefabc2f681174e, type: 3}
+  weaponStats:
+    damage: 1
+    capacity: 30
+    maxBullets: 90
+    shotRate: 0.1
+    reloadTime: 1.2
+    playerSpeed: 0
+    spread: 10

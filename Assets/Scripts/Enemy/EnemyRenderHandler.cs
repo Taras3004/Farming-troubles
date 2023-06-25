@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EnemyRenderHandler : MonoBehaviour
 {
-    [SerializeField] private EnemyPathfinder enemyPathfinder;
+    [SerializeField] private EnemyBehaviourHandler enemyBehaviourHandler;
 
     private EnemyHealthHandler enemyHealth;
     private SpriteRenderer spriteRenderer;
@@ -14,7 +15,7 @@ public class EnemyRenderHandler : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        enemyHealth = enemyPathfinder.GetComponent<EnemyHealthHandler>();
+        enemyHealth = enemyBehaviourHandler.GetComponent<EnemyHealthHandler>();
     }
     private void Start()
     {
@@ -36,16 +37,20 @@ public class EnemyRenderHandler : MonoBehaviour
     }
     private void HandleAnimation()
     {
-        animator.SetBool(IS_WALKING, enemyPathfinder.IsWalking());
+        animator.SetBool(IS_WALKING, enemyBehaviourHandler.IsWalking());
     }
 
+    public void SetWalkAnimation()
+    {
+        animator.SetBool(IS_WALKING, true);
+    }
     private void HandleRotation()
     {
-        if (enemyPathfinder.Target().transform.position.x >= transform.position.x)
+        if (enemyBehaviourHandler.Target().transform.position.x >= transform.position.x)
         {
             spriteRenderer.flipX = false;
         }
-        else if (enemyPathfinder.Target().transform.position.x <= transform.position.x)
+        else if (enemyBehaviourHandler.Target().transform.position.x <= transform.position.x)
         {
             spriteRenderer.flipX = true;
         }

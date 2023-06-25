@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
+    [SerializeField] private float speed = 10f;
     public event EventHandler OnBulletHitted;
     private Rigidbody2D rb;
     private float bulletLifetime;
@@ -26,9 +27,8 @@ public class EnemyBullet : MonoBehaviour
     }
     public void Setup(Vector3 shootDirection)
     {
-        float bulletSpeed = 10f;
         transform.right = shootDirection;
-        rb.velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * bulletSpeed;
+        rb.velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * speed;
 
     }
 
@@ -38,7 +38,7 @@ public class EnemyBullet : MonoBehaviour
         {
             OnBulletHitted?.Invoke(this, EventArgs.Empty);
             rb.velocity = Vector2.zero;
-            //player.Hit();
+            player.Hit();
         }
     }
 }

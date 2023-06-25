@@ -10,10 +10,12 @@ public class PlayerHealthPoint : MonoBehaviour
 
     public void Initialize()
     {
+        spawnFeedback.Initialization();
         spawnFeedback.PlayFeedbacks();
     }
     public void Destroy()
     {
+        destroyFeedback.Initialization();
         destroyFeedback.PlayFeedbacks();
     }
 }

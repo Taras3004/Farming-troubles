@@ -8,6 +8,7 @@ public class PlayerVisual : MonoBehaviour
     [SerializeField] private MMF_Player footstepFeedback;
     [SerializeField] private MMF_Player hitFeedback;
     [SerializeField] private MMF_Player jerkFeedback;
+    [SerializeField] private MMF_Player dieFeedback;
     [SerializeField] private MMF_Player pickupFeedback;
     [SerializeField] private MMF_Player dropFeedback;
     
@@ -16,7 +17,7 @@ public class PlayerVisual : MonoBehaviour
     private Player player;
 
     private float footstepTimer;
-    private float footstepTimerMax = 0.75f;
+    private float footstepTimerMax = 0.5f;
 
     private void Awake()
     {
@@ -31,6 +32,12 @@ public class PlayerVisual : MonoBehaviour
         playerWeaponHandler.OnWeaponPickupedAction += PlayerWeaponHandlerOnOnWeaponPickupedAction;
         playerWeaponHandler.OnWeaponDroppedAction += PlayerWeaponHandlerOnOnWeaponDroppedAction;
         player.OnJerkAction += Player_OnJerkAction;
+        PlayerHealth.Instance.OnDie += PlayerHealth_OnDie;
+    }
+
+    private void PlayerHealth_OnDie(object sender, EventArgs e)
+    {
+        dieFeedback.PlayFeedbacks();
     }
 
     private void PlayerWeaponHandlerOnOnWeaponDroppedAction(object sender, EventArgs e)

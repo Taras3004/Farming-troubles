@@ -1,3 +1,4 @@
+using System;
 using Pathfinding;
 using UnityEngine;
 
@@ -7,36 +8,49 @@ public class EnemyWeaponHandler : MonoBehaviour
     [SerializeField] private EnemyWeapon weapon;
     [SerializeField] private float weaponOffset = 0.2f;
 
-    private EnemyPathfinder enemyPathfinder;
+    private EnemyBehaviourHandler enemyBehaviourHandler;
     private EnemyHealthHandler enemyHealth;
     private Transform target;
-    private bool canShoot = true;
-
+    
+    private bool isDied = false;
+    private bool isPlayerFinded = false;
     private float aimAngle;
 
+    private bool CanShoot()
+    {
+        return isDied == false && isPlayerFinded == true && target != null;
+    }
     public Vector2 DirToTarget()
     {
         return target.position - transform.position;
     }
     private void Awake()
     {
+        weaponObject.gameObject.SetActive(false);
         enemyHealth = GetComponent<EnemyHealthHandler>();
-        enemyPathfinder = GetComponent<EnemyPathfinder>();
+        enemyBehaviourHandler = GetComponent<EnemyBehaviourHandler>();
     }
     private void Start()
     {
-        target = enemyPathfinder.Target();
+        target = enemyBehaviourHandler.Target();
         enemyHealth.OnDieEvent += EnemyHealth_OnDieEvent;
+        enemyBehaviourHandler.OnFindPlayerAction += EnemyBehaviourHandlerOnOnFindPlayerAction;
+    }
+
+    private void EnemyBehaviourHandlerOnOnFindPlayerAction(object sender, EventArgs e)
+    {
+        weaponObject.gameObject.SetActive(true);
+        isPlayerFinded = true;
     }
 
     private void EnemyHealth_OnDieEvent(object sender, System.EventArgs e)
     {
-        canShoot = false;
+        isDied = true;
     }
 
     private void Update()
     {
-        if (canShoot == false || target == null) 
+        if (CanShoot() == false) 
             return;
 
         HandleShooting();
@@ -52,22 +66,20 @@ public class EnemyWeaponHandler : MonoBehaviour
     }
     protected virtual bool CanShootTarget()
     {
-        bool isReachedEndDistance = enemyPathfinder.IsReachedEndDistance();
+        bool isReachedEndDistance = enemyBehaviourHandler.IsReachedEndDistance();
 
         if (isReachedEndDistance == false)
             return false;
 
-        RaycastHit2D raycastHit = Physics2D.Raycast(transform.position, DirToTarget(), Mathf.Infinity, enemyPathfinder.ObstaclesLayer());
+        RaycastHit2D raycastHit = Physics2D.Raycast(transform.position, DirToTarget(), Mathf.Infinity, enemyBehaviourHandler.ObstaclesLayer());
         if (raycastHit.collider == null)
             return false;
         if (raycastHit.collider.gameObject == target.gameObject)
         {
             return true;
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
     private void HandleWeaponPosition()
     {

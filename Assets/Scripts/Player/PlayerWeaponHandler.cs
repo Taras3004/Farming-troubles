@@ -43,6 +43,8 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         OnWeaponDroppedAction += PlayerWeaponHandler_OnWeaponDroppedAction;
         OnWeaponPickupedAction += PlayerWeaponHandler_OnWeaponPickupedAction;
 
+        PlayerHealth.Instance.OnDie += PlayerHealth_OnDie;
+        
         if (IsFull())
         {
             chainsawTransform.gameObject.SetActive(false);
@@ -55,6 +57,11 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         {
             chainsawTransform.gameObject.SetActive(true);
         }
+    }
+
+    private void PlayerHealth_OnDie(object sender, EventArgs e)
+    {
+        weaponSpawnTransform.gameObject.SetActive(false);
     }
 
     private void PlayerWeaponHandler_OnWeaponPickupedAction(object sender, EventArgs e)

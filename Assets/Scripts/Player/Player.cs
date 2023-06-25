@@ -5,11 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
+
+    [SerializeField] private Collider2D renderCollider;
     public event EventHandler OnJerkAction;
 
     private Rigidbody2D rb;
-    private CapsuleCollider2D coll;
-    
+
     private float moveSpeed = 5f;
     private bool isWalking;
     private Vector3 moveDir;
@@ -22,12 +23,13 @@ public class Player : MonoBehaviour
     {
         return isWalking;
     }
+
     private void Awake()
     {
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
-        coll = GetComponent<CapsuleCollider2D>();
     }
+
     private void Start()
     {
         rb.freezeRotation = true;
@@ -44,6 +46,7 @@ public class Player : MonoBehaviour
         HandleMovement();
         HandleJerkCooldown();
     }
+
     private void HandleJerkCooldown()
     {
         if (isCanJerk == false)
@@ -59,6 +62,7 @@ public class Player : MonoBehaviour
             jerkTimer = jerkTimerMax;
         }
     }
+
     private void HandleMovement()
     {
         Vector2 inputVector = GameInput.Instance.GetPlayerMovementVectorNormalized();
@@ -68,7 +72,7 @@ public class Player : MonoBehaviour
         float moveDistance = moveSpeed * Time.deltaTime;
 
         CheckCanMove(moveDir, out bool canMove);
-        if(!canMove)
+        if (!canMove)
         {
             Vector3 moveDirX = new Vector3(moveDir.x, 0, 0).normalized;
             CheckCanMove(moveDirX, out canMove);
@@ -86,6 +90,7 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
         if (canMove)
         {
             transform.position += moveDir * moveDistance;
@@ -93,15 +98,17 @@ public class Player : MonoBehaviour
 
         isWalking = moveDir != Vector3.zero;
     }
+
     private void CheckCanMove(Vector3 direction, out bool canMove)
     {
         float moveDistance = moveSpeed * Time.deltaTime;
         canMove = true;
 
-        RaycastHit2D[] raycastHit = Physics2D.CapsuleCastAll(coll.bounds.center, coll.bounds.size, CapsuleDirection2D.Vertical, 0, direction, moveDistance);
+        RaycastHit2D[] raycastHit = Physics2D.CapsuleCastAll(renderCollider.bounds.center, renderCollider.bounds.size,
+            CapsuleDirection2D.Vertical, 0, direction, moveDistance);
         for (int i = 0; i < raycastHit.Length; i++)
         {
-            if (raycastHit[i].collider.TryGetComponent(out PickableWeapon weapon)) 
+            if (raycastHit[i].collider.TryGetComponent(out PickableWeapon weapon))
                 continue;
 
             if (raycastHit[i].collider.TryGetComponent(out Player player) == false)
@@ -109,25 +116,23 @@ public class Player : MonoBehaviour
                 canMove = false;
                 break;
             }
-            else
-            {
-                canMove = true;
-            }
+
+            canMove = true;
         }
     }
+
     private void Jerk()
     {
         if (isCanJerk == false)
             return;
 
         isCanJerk = false;
-        
-        Vector2 jerkDirection = 
-            GameInput.Instance.GetPlayerMovementVectorNormalized() != Vector2.zero ?
-            GameInput.Instance.GetPlayerMovementVectorNormalized() : 
-            GameInput.Instance.GetAimDirectionVector();
-        
         float force = 12.3004f;
+
+        Vector2 jerkDirection =
+            GameInput.Instance.GetPlayerMovementVectorNormalized() != Vector2.zero
+                ? GameInput.Instance.GetPlayerMovementVectorNormalized()
+                : GameInput.Instance.GetAimDirectionVector();
 
         OnJerkAction?.Invoke(this, EventArgs.Empty);
         rb.AddForce(jerkDirection * force, ForceMode2D.Impulse);

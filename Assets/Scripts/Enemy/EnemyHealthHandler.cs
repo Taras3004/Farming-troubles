@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyHealthHandler : MonoBehaviour
@@ -10,6 +9,7 @@ public class EnemyHealthHandler : MonoBehaviour
     public event EventHandler OnDieEvent;
 
     [SerializeField] private int maxHealth;
+    [SerializeField] private EnemyLoot loot;
     private int currHealth;
     private Rigidbody2D rb;
     private Collider2D coll;
@@ -27,7 +27,7 @@ public class EnemyHealthHandler : MonoBehaviour
 
     private void EnemyHealthHandler_OnDieEvent(object sender, EventArgs e)
     {
-        coll.enabled = false;
+        GameObserver.Instance.AddDeadEnemy(this);
     }
 
     public void Hit(Vector3 shootDirection)
@@ -42,10 +42,13 @@ public class EnemyHealthHandler : MonoBehaviour
     }
     private void Die(Vector3 fallDirection)
     {
-        float force = UnityEngine.Random.Range(500, 800);
+        float force = UnityEngine.Random.Range(200, 400);
         transform.right = fallDirection;
         transform.Rotate(new Vector3(transform.position.x, transform.position.y, transform.position.z - 90));
 
+        if(Random.value < 0.33f)
+            Instantiate(loot, transform.position, Quaternion.identity);
+        
         rb.AddForce(fallDirection * force);
         OnDieEvent?.Invoke(this, EventArgs.Empty);
     }

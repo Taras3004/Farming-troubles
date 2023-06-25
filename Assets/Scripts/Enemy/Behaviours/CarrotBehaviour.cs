@@ -1,9 +1,10 @@
 using System;
-using MoreMountains.Tools;
 using UnityEngine;
 
-public class CarrotBehaviour : EnemyPathfinder
+public class CarrotBehaviour : EnemyBehaviourHandler
 {
+    [SerializeField] private AudioSource carrotAudioSource;
+    
     private readonly float detonateRadius = 1.5f;
     private bool onetime;
     
@@ -11,6 +12,12 @@ public class CarrotBehaviour : EnemyPathfinder
     {
         base.Start();
         EnemyHealth.OnDieEvent += EnemyHealthOnOnDieEvent;
+        OnFindPlayerAction += OnOnFindPlayerAction;
+    }
+
+    private void OnOnFindPlayerAction(object sender, EventArgs e)
+    {
+        carrotAudioSource.gameObject.SetActive(true);
     }
 
     private void EnemyHealthOnOnDieEvent(object sender, EventArgs e)

@@ -8,6 +8,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3524793836138887838, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: managedReferences[6185259102434754566].Sfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 97c0b186b881e2242a0ca804461b15a3, type: 3}
+    - target: {fileID: 3524793836138887838, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: managedReferences[6185259102434754566].RandomSfx.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793836138887838, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: managedReferences[6185259102434754566].RandomSfx.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 70c6c95db6dc8e244adb5cb81bc42313, type: 3}
+    - target: {fileID: 3524793836138887838, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: managedReferences[6185259102434754566].RandomSfx.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 0fbfdbebfb6d2d84e86f10e7983def1f, type: 3}
+    - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: Direction
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: FeedbacksList.Array.size
       value: 2
@@ -838,7 +858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: managedReferences[6185259188476182529].PlayEvents.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: managedReferences[7063013140572667905].RangeFalloff.m_Curve.Array.data[0].weightedMode
@@ -921,6 +941,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: managedReferences[6185259188476182529].PlayEvents.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: managedReferences[7063013140572667905].ToDestinationColorCurve.m_Curve.Array.data[0].tangentMode
       value: 0
       objectReference: {fileID: 0}
@@ -941,8 +965,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: managedReferences[6185259188476182529].PlayEvents.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 9075135748022673173}
+    - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: managedReferences[6185259188476182529].PlayEvents.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: set_enabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: managedReferences[6185259188476182529].PlayEvents.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: UnityEngine.SpriteRenderer, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: managedReferences[6185259188476182529].PlayEvents.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: UnityEngine.Behaviour, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: managedReferences[6185259188476182529].PlayEvents.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
@@ -952,12 +988,20 @@ PrefabInstance:
       propertyPath: managedReferences[6185259188476182529].PlayEvents.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Sprite, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3524793836877262856, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: managedReferences[6185259188476182529].PlayEvents.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3524793837436071563, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 9790a5f415a2ad94c8f116291c154163, type: 2}
     - target: {fileID: 3524793837436071572, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: enemyPathfinder
+      value: 
+      objectReference: {fileID: 3668895587480211373}
+    - target: {fileID: 3524793837436071572, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: enemyBehaviourHandler
       value: 
       objectReference: {fileID: 3668895587480211373}
     - target: {fileID: 3524793837436071574, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
@@ -975,6 +1019,14 @@ PrefabInstance:
     - target: {fileID: 3524793837484407313, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: endDistance
       value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: loot
+      value: 
+      objectReference: {fileID: 7589254659347092153, guid: 374a6b2462277a74a916c89138e90ae7, type: 3}
+    - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: maxHealth
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407319, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: bloodColor.b
@@ -1068,6 +1120,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6da43522623d4704e979466dc7650b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &9075135748022673173 stripped
+CapsuleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3524793837484407314, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+  m_PrefabInstance: {fileID: 5556261823166637319}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &9075135748022673175 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3524793837484407312, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
@@ -1100,6 +1157,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   stopDistance: 4
+  startFollowDistance: 7
   retreatDistance: 3
 --- !u!1001 &7781627949905260639
 PrefabInstance:

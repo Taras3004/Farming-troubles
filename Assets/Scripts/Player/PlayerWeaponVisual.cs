@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +26,14 @@ public class PlayerWeaponVisual : MonoBehaviour
         GameInput.Instance.OnDropWeaponFinishAction += GameInput_OnDropWeaponFinishAction;
         GameInput.Instance.OnDropWeaponStartAction += GameInput_OnDropWeaponStartAction;
 
+        PlayerHealth.Instance.OnDie += PlayerHealth_OnDie;
+        
         SubscribeToWeaponEvents();
+    }
+
+    private void PlayerHealth_OnDie(object sender, EventArgs e)
+    {
+        UnsubscribeWeaponEvents();
     }
 
     private void PlayerWeaponHandler_OnWeaponPickupedAction(object sender, System.EventArgs e)
