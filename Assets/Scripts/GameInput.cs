@@ -1,7 +1,9 @@
 using System;
 using System.Net;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Debug = System.Diagnostics.Debug;
 
 public class GameInput : MonoBehaviour
 {
@@ -18,6 +20,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnDropWeaponFinishAction;
     public event EventHandler OnPickupWeaponAction;
     public event EventHandler OnReloadWeaponAction;
+    public event EventHandler OnRespawnAction;
 
     private PlayerInputActions playerInputActions;
     private float aimAngle;
@@ -38,8 +41,8 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.DropWeapon.canceled += DropWeapon_canceled;
         playerInputActions.Player.PickupWeapon.performed += PickupWeapon_performed;
         playerInputActions.Player.ReloadWeapon.performed += ReloadWeapon_performed;
+        playerInputActions.Player.Respawn.performed += Respawn_performed;
     }
-
 
 
     private void OnDestroy()
@@ -52,14 +55,18 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.DropWeapon.canceled -= DropWeapon_canceled;
         playerInputActions.Player.PickupWeapon.performed -= PickupWeapon_performed;
         playerInputActions.Player.ReloadWeapon.performed -= ReloadWeapon_performed;
+        playerInputActions.Player.Respawn.performed -= Respawn_performed;
 
         playerInputActions.Dispose();
     }
+
     private void Update()
     {
         CheckCursorPosition();
     }
+
     #region InputActions
+
     private void Jerk_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         OnJerkAction?.Invoke(this, EventArgs.Empty);
@@ -94,10 +101,17 @@ public class GameInput : MonoBehaviour
     {
         OnDropWeaponStartAction?.Invoke(this, EventArgs.Empty);
     }
+
     private void ReloadWeapon_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         OnReloadWeaponAction?.Invoke(this, EventArgs.Empty);
     }
+
+    private void Respawn_performed(InputAction.CallbackContext obj)
+    {
+        OnRespawnAction?.Invoke(this, EventArgs.Empty);
+    }
+
     #endregion
 
     public Vector2 GetPlayerMovementVectorNormalized()
@@ -112,7 +126,7 @@ public class GameInput : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0f;
 
-        Vector3 aimDirection = (mousePosition - Player.Instance.transform.position).normalized;
+        Vector3 aimDirection = (mousePosition - PlayerMovement.Instance.transform.position).normalized;
         aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
 
         if (aimAngle > 90 || aimAngle < -90)

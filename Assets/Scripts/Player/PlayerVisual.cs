@@ -14,14 +14,14 @@ public class PlayerVisual : MonoBehaviour
     
     private PlayerHealth playerHealth;
     private PlayerWeaponHandler playerWeaponHandler;
-    private Player player;
+    private PlayerMovement playerMovement;
 
     private float footstepTimer;
     private float footstepTimerMax = 0.5f;
 
     private void Awake()
     {
-        player = GetComponent<Player>();
+        playerMovement = GetComponent<PlayerMovement>();
         playerWeaponHandler = GetComponent<PlayerWeaponHandler>();
         playerHealth = GetComponent<PlayerHealth>();
     }
@@ -31,7 +31,7 @@ public class PlayerVisual : MonoBehaviour
         playerHealth.OnHealthDecreased += PlayerHealth_OnHealthDecreased;
         playerWeaponHandler.OnWeaponPickupedAction += PlayerWeaponHandlerOnOnWeaponPickupedAction;
         playerWeaponHandler.OnWeaponDroppedAction += PlayerWeaponHandlerOnOnWeaponDroppedAction;
-        player.OnJerkAction += Player_OnJerkAction;
+        playerMovement.OnJerkAction += PlayerMovementOnJerkAction;
         PlayerHealth.Instance.OnDie += PlayerHealth_OnDie;
     }
 
@@ -50,7 +50,7 @@ public class PlayerVisual : MonoBehaviour
         pickupFeedback.PlayFeedbacks();
     }
 
-    private void Player_OnJerkAction(object sender, EventArgs e)
+    private void PlayerMovementOnJerkAction(object sender, EventArgs e)
     {
         jerkFeedback.PlayFeedbacks();
     }
@@ -66,7 +66,7 @@ public class PlayerVisual : MonoBehaviour
     }
     private void HandleFootstepSounds()
     {
-        if (player.IsWalking() == false)
+        if (playerMovement.IsWalking() == false)
         {
             footstepTimer = footstepTimerMax;
             return;

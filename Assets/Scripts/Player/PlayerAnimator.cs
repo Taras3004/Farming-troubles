@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    [SerializeField] private Player player;
+    [FormerlySerializedAs("player")] [SerializeField] private PlayerMovement playerMovement;
     private PlayerWeaponHandler playerWeaponAim;
 
     private SpriteRenderer spriteRenderer;
@@ -15,12 +17,19 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        playerWeaponAim = player.GetComponent<PlayerWeaponHandler>();
+        playerWeaponAim = playerMovement.GetComponent<PlayerWeaponHandler>();
     }
     private void Start()
     {
         GameInput.Instance.OnLookRight += GameInput_OnLookRight;
         GameInput.Instance.OnLookLeft += GameInput_OnLookLeft;
+        PlayerHealth.Instance.OnDie += InstanceOnOnDie;
+    }
+
+    private void InstanceOnOnDie(object sender, EventArgs e)
+    {
+        GameInput.Instance.OnLookRight -= GameInput_OnLookRight;
+        GameInput.Instance.OnLookLeft -= GameInput_OnLookLeft;
     }
 
     private void GameInput_OnLookLeft(object sender, System.EventArgs e)
@@ -35,7 +44,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private void Update()
     {
-        animator.SetBool(IS_WALKING, player.IsWalking());
+        animator.SetBool(IS_WALKING, playerMovement.IsWalking());
     }
 
     private void LookRight()

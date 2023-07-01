@@ -35,6 +35,8 @@ public class EnemyHealthHandler : MonoBehaviour
         currHealth--;
         OnHitEvent?.Invoke(this, EventArgs.Empty);
 
+        BloodParticleSystemHandler.Instance.SpawnBlood(transform.position, shootDirection);
+        
         if (currHealth <= 0)
         {
             Die(shootDirection);
@@ -45,11 +47,13 @@ public class EnemyHealthHandler : MonoBehaviour
         float force = UnityEngine.Random.Range(200, 400);
         transform.right = fallDirection;
         transform.Rotate(new Vector3(transform.position.x, transform.position.y, transform.position.z - 90));
-
-        if(Random.value < 0.33f)
-            Instantiate(loot, transform.position, Quaternion.identity);
         
         rb.AddForce(fallDirection * force);
         OnDieEvent?.Invoke(this, EventArgs.Empty);
+        
+        if(loot == null)
+            return;
+        if(Random.value < 0.33f)
+            Instantiate(loot, transform.position, Quaternion.identity);
     }
 }

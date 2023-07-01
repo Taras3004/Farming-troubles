@@ -89,6 +89,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Respawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""9cee5ea6-2080-4404-8b00-145af2d42d17"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -267,6 +276,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""91d2cc64-28e3-46c5-be13-2294832c471c"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -282,6 +302,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_DropWeapon = m_Player.FindAction("DropWeapon", throwIfNotFound: true);
         m_Player_PickupWeapon = m_Player.FindAction("PickupWeapon", throwIfNotFound: true);
         m_Player_ReloadWeapon = m_Player.FindAction("ReloadWeapon", throwIfNotFound: true);
+        m_Player_Respawn = m_Player.FindAction("Respawn", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -350,6 +371,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_DropWeapon;
     private readonly InputAction m_Player_PickupWeapon;
     private readonly InputAction m_Player_ReloadWeapon;
+    private readonly InputAction m_Player_Respawn;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -361,6 +383,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @DropWeapon => m_Wrapper.m_Player_DropWeapon;
         public InputAction @PickupWeapon => m_Wrapper.m_Player_PickupWeapon;
         public InputAction @ReloadWeapon => m_Wrapper.m_Player_ReloadWeapon;
+        public InputAction @Respawn => m_Wrapper.m_Player_Respawn;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -391,6 +414,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ReloadWeapon.started += instance.OnReloadWeapon;
             @ReloadWeapon.performed += instance.OnReloadWeapon;
             @ReloadWeapon.canceled += instance.OnReloadWeapon;
+            @Respawn.started += instance.OnRespawn;
+            @Respawn.performed += instance.OnRespawn;
+            @Respawn.canceled += instance.OnRespawn;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -416,6 +442,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ReloadWeapon.started -= instance.OnReloadWeapon;
             @ReloadWeapon.performed -= instance.OnReloadWeapon;
             @ReloadWeapon.canceled -= instance.OnReloadWeapon;
+            @Respawn.started -= instance.OnRespawn;
+            @Respawn.performed -= instance.OnRespawn;
+            @Respawn.canceled -= instance.OnRespawn;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -442,5 +471,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnDropWeapon(InputAction.CallbackContext context);
         void OnPickupWeapon(InputAction.CallbackContext context);
         void OnReloadWeapon(InputAction.CallbackContext context);
+        void OnRespawn(InputAction.CallbackContext context);
     }
 }

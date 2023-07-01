@@ -9,6 +9,11 @@ public class Bullet : MonoBehaviour
     private Rigidbody2D rb;
     private Vector3 shootDirection;
 
+    public Vector3 GetShootDirection()
+    {
+        return shootDirection;
+    }
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();

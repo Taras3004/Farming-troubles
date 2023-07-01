@@ -61,7 +61,7 @@ public class PlayerHealthUI : MonoBehaviour
     }
     private void DestroyHealthPoint()
     {
-        if (healthPointsList == null)
+        if (healthPointsList == null && player.CurrentHealth() <= 0)
             return;
         PlayerHealthPoint lastHealthPoint = healthPointsList[healthPointsList.Count - 1];
         healthPointsList.Remove(lastHealthPoint);

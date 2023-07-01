@@ -27,9 +27,9 @@ public class EnemyBehaviourHandler : MonoBehaviour
 
     public Transform Target()
     {
-        if (Player.Instance == null)
+        if (PlayerMovement.Instance == null)
             return null;
-        return Player.Instance.transform;
+        return PlayerMovement.Instance.transform;
     }
 
     public LayerMask ObstaclesLayer()
@@ -119,7 +119,7 @@ public class EnemyBehaviourHandler : MonoBehaviour
             startFollowDistance);
         for (int i = 0; i < hitObjects.Length; i++)
         {
-            if (hitObjects[i].TryGetComponent(out Player player))
+            if (hitObjects[i].TryGetComponent(out PlayerMovement player))
             {
                 OnFindPlayerAction?.Invoke(this, EventArgs.Empty);
                 AIDestinationSetter.target = player.transform;

@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    public static Player Instance { get; private set; }
+    public static PlayerMovement Instance { get; private set; }
 
     [SerializeField] private Collider2D renderCollider;
     public event EventHandler OnJerkAction;
@@ -22,6 +22,11 @@ public class Player : MonoBehaviour
     public bool IsWalking()
     {
         return isWalking;
+    }
+
+    public Vector3 GetMoveDir()
+    {
+        return moveDir;
     }
 
     private void Awake()
@@ -111,7 +116,7 @@ public class Player : MonoBehaviour
             if (raycastHit[i].collider.TryGetComponent(out PickableWeapon weapon))
                 continue;
 
-            if (raycastHit[i].collider.TryGetComponent(out Player player) == false)
+            if (raycastHit[i].collider.TryGetComponent(out PlayerMovement player) == false)
             {
                 canMove = false;
                 break;

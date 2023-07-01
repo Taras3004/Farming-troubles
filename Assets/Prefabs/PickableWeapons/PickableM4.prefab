@@ -12,6 +12,22 @@ PrefabInstance:
       propertyPath: weaponSO
       value: 
       objectReference: {fileID: 11400000, guid: b3c7df1d85b3bcc45bec254a112c88d3, type: 2}
+    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
+      propertyPath: m_Size.x
+      value: 0.61231923
+      objectReference: {fileID: 0}
+    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
+      propertyPath: m_Size.y
+      value: 0.15635353
+      objectReference: {fileID: 0}
+    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.024230078
+      objectReference: {fileID: 0}
+    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.014317721
+      objectReference: {fileID: 0}
     - target: {fileID: 5602415700915925643, guid: cd20848582f4da0468345480e42ac871, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.x
       value: 0.5

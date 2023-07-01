@@ -1,9 +1,12 @@
+using CodeMonkey.Utils;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
 [RequireComponent(typeof(Weapon))]
 public class WeaponVisual : MonoBehaviour
 {
+    [SerializeField] private ShellParticleSystemHandler.ShellUVIndex weaponType;
+    
     [SerializeField] private MMF_Player shotFeedback;
     [SerializeField] private MMF_Player reloadFeedback;
 
@@ -24,8 +27,14 @@ public class WeaponVisual : MonoBehaviour
         reloadFeedback.PlayFeedbacks();
     }
 
-    private void Weapon_OnFireAction(object sender, System.EventArgs e)
+    private void Weapon_OnFireAction(object sender, Weapon.OnWeaponShootEventArgs e)
     {
         shotFeedback.PlayFeedbacks();
+        
+        Vector3 quadPosition = e.gunEndPointPosition;
+        quadPosition += (e.shootDirection * -1f) * 0.5f;
+
+        Vector3 ShellMoveDir = UtilsClass.ApplyRotationToVector(e.shootDirection, Random.Range(-85f, -95f));
+        ShellParticleSystemHandler.Instance.SpawnShell(quadPosition, ShellMoveDir, weaponType);
     }
 }

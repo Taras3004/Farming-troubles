@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class BulletVisual : MonoBehaviour
     {
         bullet = GetComponent<Bullet>();
     }
+
     private void Start()
     {
         bullet.OnObstacleHit += Bullet_OnObstacleHit;

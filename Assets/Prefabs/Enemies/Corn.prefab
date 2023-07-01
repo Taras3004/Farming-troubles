@@ -1157,7 +1157,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   stopDistance: 4
-  startFollowDistance: 7
+  startFollowDistance: 5
   retreatDistance: 3
 --- !u!1001 &7781627949905260639
 PrefabInstance:

@@ -121,6 +121,10 @@ PrefabInstance:
       propertyPath: managedReferences[6185258743642718208].Sfx
       value: 
       objectReference: {fileID: 8300000, guid: 7d66c42e8430f76438554a6eb3fd63a0, type: 3}
+    - target: {fileID: 3891900737675298703, guid: af602626c97adc445b300f093d9fb87e, type: 3}
+      propertyPath: weaponType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7444185685462550776, guid: af602626c97adc445b300f093d9fb87e, type: 3}
       propertyPath: m_Sprite
       value: 

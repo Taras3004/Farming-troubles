@@ -714,6 +714,10 @@ PrefabInstance:
       propertyPath: managedReferences[6185259102434754565].RangeFalloff.m_Curve.Array.data[1].weightedMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3891900737675298703, guid: af602626c97adc445b300f093d9fb87e, type: 3}
+      propertyPath: weaponType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4793978503471218209, guid: af602626c97adc445b300f093d9fb87e, type: 3}
       propertyPath: FeedbacksList.Array.size
       value: 4

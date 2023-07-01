@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour, IHasProgress
 {
-    public event EventHandler OnFireAction;
+    public event EventHandler<OnWeaponShootEventArgs> OnFireAction;
     public event EventHandler OnReloadStartedAction;
     public event EventHandler OnReloadFinishedAction;
 
@@ -11,6 +11,11 @@ public class Weapon : MonoBehaviour, IHasProgress
 
     public event EventHandler<OnBulletAmountChangedEventArgs> OnBulletAmountChanged;
 
+    public class OnWeaponShootEventArgs : EventArgs
+    {
+        public Vector3 gunEndPointPosition;
+        public Vector3 shootDirection;
+    }
     public class OnBulletAmountChangedEventArgs : EventArgs
     {
         public float amount;
@@ -50,9 +55,9 @@ public class Weapon : MonoBehaviour, IHasProgress
     {
         bulletPrefab.gameObject.SetActive(false);
         weaponStats = weaponSO.weaponStats;
-        weaponState = WeaponState.Idle;
         reloadTimerMax = weaponStats.reloadTime;
         bulletAmountBalance = weaponStats.maxBullets;
+        currShotRateTime = weaponStats.shotRate;
     }
 
     private void Start()
@@ -60,6 +65,7 @@ public class Weapon : MonoBehaviour, IHasProgress
         GameInput.Instance.OnFireStartAction += GameInput_OnFireAction;
         GameInput.Instance.OnFireFinishAction += GameInput_OnFireFinishAction;
         PlayerHealth.Instance.OnDie += PlayerHealth_OnDie;
+        weaponState = WeaponState.Idle;
     }
 
     private void PlayerHealth_OnDie(object sender, EventArgs e)
@@ -117,17 +123,19 @@ public class Weapon : MonoBehaviour, IHasProgress
 
     private void GameInput_OnFireAction(object sender, EventArgs e)
     {
-        if (currShotRateTime >= weaponStats.shotRate)
+        if (currShotRateTime >= weaponStats.shotRate && weaponState == WeaponState.Idle)
         {
-            Shot();
             weaponState = WeaponState.Fire;
+            Shot();
         }
     }
 
     private void GameInput_OnFireFinishAction(object sender, EventArgs e)
     {
         if (weaponState == WeaponState.Fire)
+        {
             weaponState = WeaponState.Idle;
+        }
     }
 
     private void Shot()
@@ -135,20 +143,26 @@ public class Weapon : MonoBehaviour, IHasProgress
         bool canShoot = weaponState != WeaponState.Reloading && bulletAmount > 0;
         if (canShoot == false)
             return;
-        OnFireAction?.Invoke(this, EventArgs.Empty);
+        OnFireAction?.Invoke(this, new OnWeaponShootEventArgs()
+        {
+            gunEndPointPosition = shotPosition.position,
+            shootDirection = GameInput.Instance.GetAimDirectionVector()
+        });
 
         ShotBehaviour();
         currShotRateTime = 0f;
 
-        weaponState = WeaponState.Fire;
+        //weaponState = WeaponState.Fire;
         bulletAmount--;
 
         OnBulletAmountChanged?.Invoke(this, new OnBulletAmountChangedEventArgs
         {
             amount = bulletAmount, bulletBalance = bulletAmountBalance
         });
-        if (bulletAmount <= 0 && bulletAmountBalance > 0)
+        if (bulletAmount <= 0)
+        {
             StartReloading();
+        }
     }
 
     protected virtual void ShotBehaviour()

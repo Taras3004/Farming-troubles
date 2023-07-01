@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 {
+    public static PlayerWeaponHandler Instance;
+    
     public event EventHandler OnWeaponDroppedAction;
     public event EventHandler OnWeaponPickupedAction;
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnWeaponDropProgress;
@@ -27,9 +29,10 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 
     private void Awake()
     {
+        Instance = this;
+        
         if (weaponSpawnTransform.GetChild(0).TryGetComponent(out Weapon weapon))
             currentWeapon = weapon;
-
     }
     private void Start()
     {
@@ -61,7 +64,7 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 
     private void PlayerHealth_OnDie(object sender, EventArgs e)
     {
-        weaponSpawnTransform.gameObject.SetActive(false);
+        Destroy(currentWeapon.gameObject);
     }
 
     private void PlayerWeaponHandler_OnWeaponPickupedAction(object sender, EventArgs e)
@@ -96,15 +99,15 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         HandleWeaponDrop();
     }
 
-    private void GameInput_OnDropWeaponFinishAction(object sender, EventArgs e)
-    {
-        isDropWeaponKeyHolded = false;
-    }
-
     private void GameInput_OnDropWeaponStartAction(object sender, EventArgs e)
     {
         isDropWeaponKeyHolded = true;
         weaponDropTimer = 0;
+    }
+
+    private void GameInput_OnDropWeaponFinishAction(object sender, EventArgs e)
+    {
+        isDropWeaponKeyHolded = false;
     }
 
     private void GameInput_OnLookRight(object sender, EventArgs e)

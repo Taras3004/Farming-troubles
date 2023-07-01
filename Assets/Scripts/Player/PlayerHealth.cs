@@ -1,7 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -23,8 +22,28 @@ public class PlayerHealth : MonoBehaviour
         Instance = this;
         currHealth = maxHealth;
     }
+
+    private void Start()
+    {
+        OnDie += OnOnDie;
+    }
+
+    private void OnOnDie(object sender, EventArgs e)
+    {
+        GameInput.Instance.OnRespawnAction += InstanceOnOnRespawnAction;
+    }
+
+    private void InstanceOnOnRespawnAction(object sender, EventArgs e)
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
+    }
+
     public void Hit()
     {
+        if(currHealth <= 0)
+            return;
+        
         currHealth--;
         OnHealthDecreased?.Invoke(this, EventArgs.Empty);
 

@@ -826,7 +826,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   stopDistance: 4
-  startFollowDistance: 7
+  startFollowDistance: 5
 --- !u!114 &3216603374236536564
 MonoBehaviour:
   m_ObjectHideFlags: 0

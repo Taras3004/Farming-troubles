@@ -38,7 +38,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407313, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: startFollowDistance
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407313, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: decreasedEndDistance
