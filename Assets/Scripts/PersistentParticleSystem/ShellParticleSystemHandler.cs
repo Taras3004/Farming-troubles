@@ -65,7 +65,7 @@ public class ShellParticleSystemHandler : MonoBehaviour
             position += direction * moveSpeed * Time.deltaTime;
             rotation += 360f * (moveSpeed / 10f) * Time.deltaTime;
             
-            meshParticleSystem.UpdateQuad(quadIndex, position, rotation, quadSize, true, shellUVIndexInt);
+            meshParticleSystem.UpdateQuad(quadIndex, position, rotation, quadSize, true, shellUVIndexInt, Color.white);
 
             float slowDownFactor = 3.5f;
             moveSpeed -= moveSpeed * slowDownFactor * Time.deltaTime;

@@ -8,17 +8,21 @@ public class DirtParticleSystemHandler : MonoBehaviour
     private MeshParticleSystem meshParticleSystem;
     private List<Single> singleList;
 
-    private void Awake() {
+    private void Awake()
+    {
         Instance = this;
         meshParticleSystem = GetComponent<MeshParticleSystem>();
         singleList = new List<Single>();
     }
 
-    private void Update() {
-        for (int i=0; i<singleList.Count; i++) {
+    private void Update()
+    {
+        for (int i = 0; i < singleList.Count; i++)
+        {
             Single single = singleList[i];
             single.Update();
-            if (single.IsParticleComplete()) {
+            if (single.IsParticleComplete())
+            {
                 single.DestroySelf();
                 singleList.RemoveAt(i);
                 i--;
@@ -26,7 +30,8 @@ public class DirtParticleSystemHandler : MonoBehaviour
         }
     }
 
-    public void SpawnDirt(Vector3 position, Vector3 direction) {
+    public void SpawnDirt(Vector3 position, Vector3 direction)
+    {
         singleList.Add(new Single(position, direction, meshParticleSystem));
     }
 
@@ -34,8 +39,8 @@ public class DirtParticleSystemHandler : MonoBehaviour
     /*
      * Represents a single Dirt Particle
      * */
-    private class Single {
-
+    private class Single
+    {
         private MeshParticleSystem meshParticleSystem;
         private Vector3 position;
         private Vector3 direction;
@@ -46,7 +51,8 @@ public class DirtParticleSystemHandler : MonoBehaviour
         private float uvIndexTimer;
         private float uvIndexTimerMax;
 
-        public Single(Vector3 position, Vector3 direction, MeshParticleSystem meshParticleSystem) {
+        public Single(Vector3 position, Vector3 direction, MeshParticleSystem meshParticleSystem)
+        {
             this.position = position;
             this.direction = direction;
             this.meshParticleSystem = meshParticleSystem;
@@ -54,32 +60,36 @@ public class DirtParticleSystemHandler : MonoBehaviour
             quadSize = new Vector3(0.3f, 0.3f);
             moveSpeed = Random.Range(1.5f, 4f);
             uvIndex = 0;
-            uvIndexTimerMax = 1f / 10;
+            uvIndexTimerMax = 1f / 7;
 
             quadIndex = meshParticleSystem.AddQuad(position, 0f, quadSize, false, uvIndex);
         }
 
-        public void Update() {
+        public void Update()
+        {
             uvIndexTimer += Time.deltaTime;
-            if (uvIndexTimer >= uvIndexTimerMax) {
+            if (uvIndexTimer >= uvIndexTimerMax)
+            {
                 uvIndexTimer -= uvIndexTimerMax;
                 uvIndex++;
             }
+
             position += direction * moveSpeed * Time.deltaTime;
 
-            meshParticleSystem.UpdateQuad(quadIndex, position, 0f, quadSize, false, uvIndex);
+            meshParticleSystem.UpdateQuad(quadIndex, position, 0f, quadSize, false, uvIndex, Color.white);
 
             float slowDownFactor = 3.5f;
             moveSpeed -= moveSpeed * slowDownFactor * Time.deltaTime;
         }
 
-        public bool IsParticleComplete() {
+        public bool IsParticleComplete()
+        {
             return uvIndex >= 4 || moveSpeed < .1f;
         }
 
-        public void DestroySelf() {
+        public void DestroySelf()
+        {
             meshParticleSystem.DestroyQuad(quadIndex);
         }
-
     }
 }

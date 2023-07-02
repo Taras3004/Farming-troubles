@@ -1028,6 +1028,18 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: bloodColor.b
+      value: 0.20784315
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: bloodColor.g
+      value: 0.9490197
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: bloodColor.r
+      value: 0.9843138
+      objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407319, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: bloodColor.b
       value: 0.20784315
@@ -1157,7 +1169,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   stopDistance: 4
-  startFollowDistance: 5
+  startFollowDistance: 6
   retreatDistance: 3
 --- !u!1001 &7781627949905260639
 PrefabInstance:

@@ -665,6 +665,18 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: bloodColor.b
+      value: 0.18431373
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: bloodColor.g
+      value: 0.74509805
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: bloodColor.r
+      value: 0.4156863
+      objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407319, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: bloodColor.b
       value: 0.1882353

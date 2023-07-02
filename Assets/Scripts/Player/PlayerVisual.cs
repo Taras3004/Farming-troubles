@@ -18,6 +18,9 @@ public class PlayerVisual : MonoBehaviour
 
     private float footstepTimer;
     private float footstepTimerMax = 0.5f;
+    
+    private float nextSpawnDirtTime;
+    private float dirtSpawnRate = 0.2f;
 
     private void Awake()
     {
@@ -63,6 +66,8 @@ public class PlayerVisual : MonoBehaviour
     private void Update()
     {
         HandleFootstepSounds();
+        
+        TrySpawnDirtParticles();
     }
     private void HandleFootstepSounds()
     {
@@ -76,6 +81,19 @@ public class PlayerVisual : MonoBehaviour
         {
             footstepTimer = footstepTimerMax;
             footstepFeedback.PlayFeedbacks();
+        }
+    }
+    
+    private void TrySpawnDirtParticles()
+    {
+        if (Time.time < nextSpawnDirtTime)
+            return;
+
+        if (playerMovement.IsWalking())
+        {
+            DirtParticleSystemHandler.Instance.SpawnDirt(playerMovement.transform.position + new Vector3(0, -0.3f),
+                playerMovement.GetMoveDir() * -1f);
+            nextSpawnDirtTime = Time.time + dirtSpawnRate;
         }
     }
 

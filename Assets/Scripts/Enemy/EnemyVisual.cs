@@ -5,18 +5,11 @@ using UnityEngine;
 
 public class EnemyVisual : MonoBehaviour
 {
-    [SerializeField] private Color bloodColor = Color.red;
-
     [SerializeField] private MMF_Player hitFeedback;
     [SerializeField] private MMF_Player dieFeedback;
 
     private EnemyHealthHandler enemyHealth;
-
-    public Color BloodColor()
-    {
-        return bloodColor;
-    }
-
+    
     private void Awake()
     {
         enemyHealth = GetComponent<EnemyHealthHandler>();

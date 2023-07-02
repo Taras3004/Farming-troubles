@@ -1088,6 +1088,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3575c1fd433604446aca3abde61199f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodColor: {r: 0, g: 0, b: 0, a: 0}
   maxHealth: 3
   loot: {fileID: 0}
 --- !u!114 &3524793837484407313
@@ -1119,7 +1120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e420dcb2cc2af4245b98144bd9f98130, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodColor: {r: 1, g: 0, b: 0, a: 1}
   hitFeedback: {fileID: 3524793836138887838}
   dieFeedback: {fileID: 3524793836877262856}
 --- !u!50 &3524793837484407317
@@ -1225,8 +1225,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   version: 5
-  radius: 0.6
-  height: 2
+  radius: 0.5
+  height: 1
   canMove: 1
   maxSpeed: 4
   gravity: {x: 0, y: 0, z: 0}

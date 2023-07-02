@@ -48,19 +48,26 @@ public class EnemyBehaviourHandler : MonoBehaviour
         AIDestinationSetter = GetComponent<AIDestinationSetter>();
         EnemyHealth = GetComponent<EnemyHealthHandler>();
         Tr = GetComponent<Transform>();
-        StartCoroutine(HandlePatroling());
+        //StartCoroutine(HandlePatroling());
         state = State.Patroling;
     }
 
     protected virtual void Start()
     {
         EnemyHealth.OnDieEvent += EnemyHealth_OnDieEvent;
+        EnemyHealth.OnHitEvent += EnemyHealthOnOnHitEvent;
     }
 
-    private void EnemyHealth_OnDieEvent(object sender, System.EventArgs e)
+    private void EnemyHealth_OnDieEvent(object sender, EventArgs e)
     {
         DisableMovement();
         Destroy(followObject);
+    }
+
+    private void EnemyHealthOnOnHitEvent(object sender, EventArgs e)
+    {
+        Transform player = PlayerMovement.Instance.transform;
+        SetPlayer(player);
     }
 
     private void DisableMovement()
@@ -78,7 +85,7 @@ public class EnemyBehaviourHandler : MonoBehaviour
         }
         else if (state == State.FollowingPlayer)
         {
-            StopCoroutine(HandlePatroling());
+            //StopCoroutine(HandlePatroling());
             HandleBehaviour();
         }
     }
@@ -121,12 +128,25 @@ public class EnemyBehaviourHandler : MonoBehaviour
         {
             if (hitObjects[i].TryGetComponent(out PlayerMovement player))
             {
-                OnFindPlayerAction?.Invoke(this, EventArgs.Empty);
-                AIDestinationSetter.target = player.transform;
-                AIPath.endReachedDistance = stopDistance;
-                state = State.FollowingPlayer;
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position,
+                    startFollowDistance, obstaclesLayer);
+
+                if (hit.collider == null)
+                    return;
+                if (hit.collider.gameObject != player.gameObject)
+                    return;
+
+                SetPlayer(player.transform);
             }
         }
+    }
+
+    private void SetPlayer(Transform playerTransform)
+    {
+        OnFindPlayerAction?.Invoke(this, EventArgs.Empty);
+        AIDestinationSetter.target = playerTransform;
+        AIPath.endReachedDistance = stopDistance;
+        state = State.FollowingPlayer;
     }
 
     protected virtual void HandleBehaviour()

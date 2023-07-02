@@ -8,12 +8,17 @@ public class EnemyHealthHandler : MonoBehaviour
     public event EventHandler OnHitEvent;
     public event EventHandler OnDieEvent;
 
+    [SerializeField] private Color bloodColor;
     [SerializeField] private int maxHealth;
     [SerializeField] private EnemyLoot loot;
     private int currHealth;
     private Rigidbody2D rb;
     private Collider2D coll;
 
+    public Color BloodColor()
+    {
+        return bloodColor;
+    }
     private void Awake()
     {
         coll = GetComponent<Collider2D>();
@@ -35,7 +40,7 @@ public class EnemyHealthHandler : MonoBehaviour
         currHealth--;
         OnHitEvent?.Invoke(this, EventArgs.Empty);
 
-        BloodParticleSystemHandler.Instance.SpawnBlood(transform.position, shootDirection);
+        BloodParticleSystemHandler.Instance.SpawnBlood(transform.position, shootDirection, bloodColor);
         
         if (currHealth <= 0)
         {

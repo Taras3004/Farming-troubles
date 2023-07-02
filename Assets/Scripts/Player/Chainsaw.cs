@@ -45,7 +45,7 @@ public class Chainsaw : MonoBehaviour
     {
         if (collision.TryGetComponent(out EnemyHealthHandler enemyHealthHandler))
         {
-            particlesColor = collision.GetComponent<EnemyVisual>().BloodColor();
+            particlesColor = collision.GetComponent<EnemyHealthHandler>().BloodColor();
             hittedEnemies.Add(enemyHealthHandler);
             OnStartedDamaging?.Invoke(this, EventArgs.Empty);
         }

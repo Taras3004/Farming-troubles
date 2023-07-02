@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MeshParticleSystem : MonoBehaviour
 {
@@ -89,11 +90,11 @@ public class MeshParticleSystem : MonoBehaviour
         }
     }
 
-    public int AddQuad(Vector3 position, float rotation, Vector3 quadSize, bool skewed, int uvIndex)
+    public int AddQuad(Vector3 position, float rotation, Vector3 quadSize, bool skewed, int uvIndex, Color color = default)
     {
         if (quadIndex >= MAX_QUAD_AMOUNT) return 0;
 
-        UpdateQuad(quadIndex, position, rotation, quadSize, skewed, uvIndex);
+        UpdateQuad(quadIndex, position, rotation, quadSize, skewed, uvIndex, color);
 
         int spawnedQuadIndex = quadIndex;
         quadIndex++;
@@ -101,9 +102,8 @@ public class MeshParticleSystem : MonoBehaviour
         return spawnedQuadIndex;
     }
 
-    public void UpdateQuad(int quadIndex, Vector3 position, float rotation, Vector3 quadSize, bool skewed, int uvIndex)
+    public void UpdateQuad(int quadIndex, Vector3 position, float rotation, Vector3 quadSize, bool skewed, int uvIndex, Color color)
     {
-        
         int vIndex = quadIndex * 4;
         int vIndex0 = vIndex;
         int vIndex1 = vIndex + 1;
@@ -140,7 +140,7 @@ public class MeshParticleSystem : MonoBehaviour
         triangles[tIndex + 3] = vIndex0;
         triangles[tIndex + 4] = vIndex2;
         triangles[tIndex + 5] = vIndex3;
-        
+
         updateVertices = true;
         updateUV = true;
         updateTriangles = true;
