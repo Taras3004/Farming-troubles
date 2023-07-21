@@ -31,10 +31,10 @@ public class WeaponVisual : MonoBehaviour
     {
         shotFeedback.PlayFeedbacks();
         
-        Vector3 quadPosition = e.gunEndPointPosition;
-        quadPosition += (e.shootDirection * -1f) * 0.5f;
+        Vector3 quadPosition = e.GunEndPointPosition;
+        quadPosition += (e.ShootDirection * -1f) * 0.5f;
 
-        Vector3 ShellMoveDir = UtilsClass.ApplyRotationToVector(e.shootDirection, Random.Range(-85f, -95f));
+        Vector3 ShellMoveDir = UtilsClass.ApplyRotationToVector(e.ShootDirection, Random.Range(-85f, -95f));
         ShellParticleSystemHandler.Instance.SpawnShell(quadPosition, ShellMoveDir, weaponType);
     }
 }

@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Jerk",
+                    "name": "Dash",
                     "type": "Button",
                     "id": "457da4d0-f2db-437b-9e6e-0ceae0c25129",
                     "expectedControlType": "Button",
@@ -108,7 +108,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jerk",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -1,9 +1,6 @@
 using System;
-using System.Net;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-using Debug = System.Diagnostics.Debug;
 
 public class GameInput : MonoBehaviour
 {
@@ -15,7 +12,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnFireStartAction;
     public event EventHandler OnFireFinishAction;
     public event EventHandler OnPauseAction;
-    public event EventHandler OnJerkAction;
+    public event EventHandler OnDashAction;
     public event EventHandler OnDropWeaponStartAction;
     public event EventHandler OnDropWeaponFinishAction;
     public event EventHandler OnPickupWeaponAction;
@@ -24,6 +21,7 @@ public class GameInput : MonoBehaviour
 
     private PlayerInputActions playerInputActions;
     private float aimAngle;
+    private Camera cam;
 
     private void Awake()
     {
@@ -33,29 +31,18 @@ public class GameInput : MonoBehaviour
 
         playerInputActions.Enable();
 
-        playerInputActions.Player.Fire.performed += Fire_performed;
-        playerInputActions.Player.Fire.canceled += Fire_canceled;
-        playerInputActions.Player.Pause.performed += Pause_performed;
-        playerInputActions.Player.Jerk.performed += Jerk_performed;
-        playerInputActions.Player.DropWeapon.performed += DropWeapon_performed;
-        playerInputActions.Player.DropWeapon.canceled += DropWeapon_canceled;
-        playerInputActions.Player.PickupWeapon.performed += PickupWeapon_performed;
-        playerInputActions.Player.ReloadWeapon.performed += ReloadWeapon_performed;
-        playerInputActions.Player.Respawn.performed += Respawn_performed;
+        EnablePlayerActions();
+    }
+
+    private void Start()
+    {
+        cam = Camera.main;
     }
 
 
     private void OnDestroy()
     {
-        playerInputActions.Player.Fire.performed -= Fire_performed;
-        playerInputActions.Player.Fire.canceled -= Fire_canceled;
-        playerInputActions.Player.Pause.performed -= Pause_performed;
-        playerInputActions.Player.Jerk.performed -= Jerk_performed;
-        playerInputActions.Player.DropWeapon.performed -= DropWeapon_performed;
-        playerInputActions.Player.DropWeapon.canceled -= DropWeapon_canceled;
-        playerInputActions.Player.PickupWeapon.performed -= PickupWeapon_performed;
-        playerInputActions.Player.ReloadWeapon.performed -= ReloadWeapon_performed;
-        playerInputActions.Player.Respawn.performed -= Respawn_performed;
+        DisablePlayerActions();
 
         playerInputActions.Dispose();
     }
@@ -65,44 +52,70 @@ public class GameInput : MonoBehaviour
         CheckCursorPosition();
     }
 
-    #region InputActions
-
-    private void Jerk_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    public void EnablePlayerActions()
     {
-        OnJerkAction?.Invoke(this, EventArgs.Empty);
+        playerInputActions.Player.Fire.performed += Fire_performed;
+        playerInputActions.Player.Fire.canceled += Fire_canceled;
+        playerInputActions.Player.Pause.performed += Pause_performed;
+        playerInputActions.Player.Dash.performed += Dash_performed;
+        playerInputActions.Player.DropWeapon.performed += DropWeapon_performed;
+        playerInputActions.Player.DropWeapon.canceled += DropWeapon_canceled;
+        playerInputActions.Player.PickupWeapon.performed += PickupWeapon_performed;
+        playerInputActions.Player.ReloadWeapon.performed += ReloadWeapon_performed;
+        playerInputActions.Player.Respawn.performed += Respawn_performed;
     }
 
-    private void Pause_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    public void DisablePlayerActions()
+    {
+        playerInputActions.Player.Fire.performed -= Fire_performed;
+        playerInputActions.Player.Fire.canceled -= Fire_canceled;
+        playerInputActions.Player.Pause.performed -= Pause_performed;
+        playerInputActions.Player.Dash.performed -= Dash_performed;
+        playerInputActions.Player.DropWeapon.performed -= DropWeapon_performed;
+        playerInputActions.Player.DropWeapon.canceled -= DropWeapon_canceled;
+        playerInputActions.Player.PickupWeapon.performed -= PickupWeapon_performed;
+        playerInputActions.Player.ReloadWeapon.performed -= ReloadWeapon_performed;
+        playerInputActions.Player.Respawn.performed -= Respawn_performed;
+    }
+
+    #region InputActions
+
+    private void Dash_performed(InputAction.CallbackContext obj)
+    {
+        OnDashAction?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Pause_performed(InputAction.CallbackContext obj)
     {
         OnPauseAction?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Fire_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void Fire_performed(InputAction.CallbackContext obj)
     {
         OnFireStartAction?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Fire_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void Fire_canceled(InputAction.CallbackContext obj)
     {
         OnFireFinishAction?.Invoke(this, EventArgs.Empty);
     }
 
-    private void PickupWeapon_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void PickupWeapon_performed(InputAction.CallbackContext obj)
     {
         OnPickupWeaponAction?.Invoke(this, EventArgs.Empty);
     }
 
-    private void DropWeapon_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void DropWeapon_canceled(InputAction.CallbackContext obj)
     {
         OnDropWeaponFinishAction?.Invoke(this, EventArgs.Empty);
     }
 
-    private void DropWeapon_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void DropWeapon_performed(InputAction.CallbackContext obj)
     {
         OnDropWeaponStartAction?.Invoke(this, EventArgs.Empty);
     }
 
-    private void ReloadWeapon_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void ReloadWeapon_performed(InputAction.CallbackContext obj)
     {
         OnReloadWeaponAction?.Invoke(this, EventArgs.Empty);
     }
@@ -123,12 +136,19 @@ public class GameInput : MonoBehaviour
 
     private void CheckCursorPosition()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (cam == null) 
+            return;
+
+        PlayerWeaponHandler player = PlayerMovement.Instance.GetComponent<PlayerWeaponHandler>();
+
+        Vector3 aimCenterPosition = new Vector3(player.transform.position.x,
+            player.GetWeaponSpawnTransform().transform.position.y);
+        
+        Vector3 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0f;
 
-        Vector3 aimDirection = (mousePosition - PlayerMovement.Instance.transform.position).normalized;
+        Vector3 aimDirection = (mousePosition - aimCenterPosition).normalized;
         aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-
         if (aimAngle > 90 || aimAngle < -90)
         {
             OnLookLeft?.Invoke(this, EventArgs.Empty);

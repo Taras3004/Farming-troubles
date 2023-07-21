@@ -3,25 +3,28 @@ using UnityEngine;
 
 public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 {
-    public static PlayerWeaponHandler Instance;
-    
     public event EventHandler OnWeaponDroppedAction;
-    public event EventHandler OnWeaponPickupedAction;
+    public event EventHandler OnWeaponPickedAction;
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnWeaponDropProgress;
 
     [SerializeField] private Transform weaponSpawnTransform;
     [SerializeField] private Transform chainsawTransform;
-    
+
     private Weapon currentWeapon;
 
     private float weaponDropTimer;
-    private readonly float weaponDropTimerMax = 0.5f;
-    private bool isDropWeaponKeyHolded;
-    
+    private readonly float weaponDropTimerMax = 0.2f;
+    private bool isDropWeaponKeyHeld;
+
+    public Transform GetWeaponSpawnTransform()
+    {
+        return weaponSpawnTransform;
+    }
     public Weapon GetCurrentWeapon()
     {
         return currentWeapon;
     }
+
     public bool IsFull()
     {
         return GetCurrentWeapon() != null;
@@ -29,11 +32,10 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 
     private void Awake()
     {
-        Instance = this;
-        
         if (weaponSpawnTransform.GetChild(0).TryGetComponent(out Weapon weapon))
             currentWeapon = weapon;
     }
+
     private void Start()
     {
         GameInput.Instance.OnLookLeft += GameInput_OnLookLeft;
@@ -44,10 +46,10 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         GameInput.Instance.OnReloadWeaponAction += GameInput_OnReloadWeaponAction;
 
         OnWeaponDroppedAction += PlayerWeaponHandler_OnWeaponDroppedAction;
-        OnWeaponPickupedAction += PlayerWeaponHandler_OnWeaponPickupedAction;
+        OnWeaponPickedAction += PlayerWeaponHandlerOnWeaponPickedAction;
 
         PlayerHealth.Instance.OnDie += PlayerHealth_OnDie;
-        
+
         if (IsFull())
         {
             chainsawTransform.gameObject.SetActive(false);
@@ -64,10 +66,14 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 
     private void PlayerHealth_OnDie(object sender, EventArgs e)
     {
-        Destroy(currentWeapon.gameObject);
+        if (currentWeapon != null)
+        {
+            Destroy(currentWeapon.gameObject);
+        }
+        weaponSpawnTransform.gameObject.SetActive(false);
     }
 
-    private void PlayerWeaponHandler_OnWeaponPickupedAction(object sender, EventArgs e)
+    private void PlayerWeaponHandlerOnWeaponPickedAction(object sender, EventArgs e)
     {
         DisableChainsaw();
     }
@@ -79,9 +85,9 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 
     private void GameInput_OnReloadWeaponAction(object sender, EventArgs e)
     {
-        if(IsFull())
+        if (IsFull())
         {
-            if (currentWeapon.GetBulletAmountBalance() <= 0 
+            if (currentWeapon.GetBulletAmountBalance() <= 0
                 || currentWeapon.GetBulletAmount() == currentWeapon.GetWeaponSO().weaponStats.capacity)
                 return;
             currentWeapon.StartReloading();
@@ -90,7 +96,7 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 
     private void GameInput_OnPickupWeaponAction(object sender, EventArgs e)
     {
-        FindPickupableWeapons();
+        FindPickableWeapons();
     }
 
     private void Update()
@@ -101,13 +107,13 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 
     private void GameInput_OnDropWeaponStartAction(object sender, EventArgs e)
     {
-        isDropWeaponKeyHolded = true;
+        isDropWeaponKeyHeld = true;
         weaponDropTimer = 0;
     }
 
     private void GameInput_OnDropWeaponFinishAction(object sender, EventArgs e)
     {
-        isDropWeaponKeyHolded = false;
+        isDropWeaponKeyHeld = false;
     }
 
     private void GameInput_OnLookRight(object sender, EventArgs e)
@@ -122,12 +128,12 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 
     private void HandleWeaponDrop()
     {
-        if (isDropWeaponKeyHolded == false || currentWeapon == null)
+        if (isDropWeaponKeyHeld == false || currentWeapon == null)
             return;
 
         weaponDropTimer += Time.deltaTime;
         OnWeaponDropProgress?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
-        { progressNormalized = weaponDropTimer / weaponDropTimerMax });
+            { progressNormalized = weaponDropTimer / weaponDropTimerMax });
 
         if (weaponDropTimer >= weaponDropTimerMax)
         {
@@ -135,12 +141,13 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
             weaponDropTimer = 0;
         }
     }
+
     private void HandleWeaponAngle()
     {
         float aimAngle = GameInput.Instance.GetAimDirectionAngle();
         weaponSpawnTransform.eulerAngles = new Vector3(0, 0, aimAngle);
     }
-    
+
     private void SetLeftPosition()
     {
         Vector3 aimLeftLocalScale = Vector3.one;
@@ -150,6 +157,7 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         float weaponPositionOffset = -0.2f;
         weaponSpawnTransform.localPosition = new Vector2(weaponPositionOffset, weaponSpawnTransform.localPosition.y);
     }
+
     private void SetRightPosition()
     {
         Vector3 aimRightLocalScale = Vector3.one;
@@ -159,10 +167,11 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         float weaponPositionOffset = 0.2f;
         weaponSpawnTransform.localPosition = new Vector2(weaponPositionOffset, weaponSpawnTransform.localPosition.y);
     }
+
     private void DropWeapon()
     {
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3 dropDir = (mousePosition - transform.position).normalized;
+        Vector2 dropDir = (mousePosition - transform.position).normalized;
 
         GameObject pickableWeaponObject = currentWeapon.GetWeaponSO().pickableWeaponPrefab;
         GameObject tempPickableObject = Instantiate(pickableWeaponObject, transform.position, Quaternion.identity);
@@ -172,15 +181,16 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 
         tempPickableWeapon.SetupBulletAmount(currentWeapon.GetBulletAmount(), currentWeapon.GetBulletAmountBalance());
 
-        float force = 15f;
-        tempPickableObjectRb.AddForce(dropDir * force, ForceMode2D.Impulse);
-
+        float force = 8f;
+        tempPickableObjectRb.AddForce(dropDir.normalized * force, ForceMode2D.Impulse);
+        
         OnWeaponDroppedAction?.Invoke(this, EventArgs.Empty);
 
         Destroy(currentWeapon.gameObject);
         currentWeapon = null;
     }
-    private void FindPickupableWeapons()
+
+    private void FindPickableWeapons()
     {
         if (IsFull())
             return;
@@ -188,28 +198,33 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         float interactRange = 1f;
         Collider2D[] colliderArray = Physics2D.OverlapCircleAll(transform.position, interactRange);
 
-        foreach(Collider2D collider in colliderArray)
+        foreach (Collider2D tempCollider in colliderArray)
         {
-            if (collider.TryGetComponent(out PickableWeapon weapon))
+            if (tempCollider.TryGetComponent(out PickableWeapon weapon))
             {
                 weapon.Interact(this);
                 break;
             }
         }
     }
+
     public void PickupWeapon(WeaponSO weaponSO, int bulletAmount, int bulletAmountMax)
     {
         GameObject weaponPrefab = weaponSO.weaponPrefab;
-        GameObject tempWeapon = Instantiate(weaponPrefab, weaponSpawnTransform.position, new Quaternion(0,0,0,0) , weaponSpawnTransform);
+        GameObject tempWeapon = Instantiate(weaponPrefab, weaponSpawnTransform.position, new Quaternion(0, 0, 0, 0),
+            weaponSpawnTransform);
         currentWeapon = tempWeapon.GetComponent<Weapon>();
         currentWeapon.Setup(bulletAmount, bulletAmountMax);
-        OnWeaponPickupedAction?.Invoke(this, EventArgs.Empty);
+        OnWeaponPickedAction?.Invoke(this, EventArgs.Empty);
     }
+    
+    
 
     private void EnableChainsaw()
     {
         chainsawTransform.gameObject.SetActive(true);
     }
+
     private void DisableChainsaw()
     {
         chainsawTransform.gameObject.SetActive(false);

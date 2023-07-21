@@ -40,7 +40,7 @@ public class ChainsawVisual : MonoBehaviour
         hitParticles.Play();
 
         var main = hitParticles.main;
-        main.startColor = new Color(chainsaw.PariclesColor().r, chainsaw.PariclesColor().g, chainsaw.PariclesColor().b, 255);
+        main.startColor = new Color(chainsaw.ColorOfParticles().r, chainsaw.ColorOfParticles().g, chainsaw.ColorOfParticles().b, 255);
     }
     private void FinishDamaging()
     {

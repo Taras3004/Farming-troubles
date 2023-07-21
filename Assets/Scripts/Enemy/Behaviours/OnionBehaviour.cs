@@ -1,75 +1,109 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class OnionBehaviour : EnemyBehaviourHandler
 {
-    
-    public event EventHandler OnJerkAction;
+    public event EventHandler OnDashAction;
 
-    private float jerkTimer;
-    private float jerkTimerMax = 5f;
+    private Collider2D coll;
 
-    private float jerkDurationMax = 0.4f;
-    private float currJerkDuration;
+    private float dashTimer;
+    private readonly float dashTimerMax = 5f;
+
+    private readonly float dashDurationMax = 0.6f;
+    private float currDashDuration;
 
     private OnionState onionState = OnionState.Idle;
-    private Vector2 jerkDirection;
-    
-    
-    private void HandleJerkCooldown()
+    private Vector2 dashDirection;
+
+
+    protected override void Awake()
+    {
+        base.Awake();
+        coll = GetComponent<Collider2D>();
+    }
+
+    private void HandleDashCooldown()
     {
         if (onionState == OnionState.OnCooldown)
         {
-            jerkTimer += Time.deltaTime;
-            if (jerkTimer >= jerkTimerMax)
+            dashTimer += Time.deltaTime;
+            if (dashTimer >= dashTimerMax)
             {
                 onionState = OnionState.Idle;
-                jerkTimer = 0;
+                dashTimer = 0;
             }
         }
     }
 
-    private void HandleJerkDuration()
+    private void HandleDashDuration()
     {
-        if (onionState == OnionState.Jerking)
+        if (onionState == OnionState.Dashing)
         {
-            float jerkSpeed = 15f;
+            float dashSpeed = 6f;
+            CheckCanMove(dashDirection, dashSpeed, out bool canMove);
+            if (canMove)
+            {
+                transform.position = Vector2.MoveTowards(Tr.position,
+                    dashDirection, Time.deltaTime * dashSpeed);
+            }
 
-            transform.position = Vector2.MoveTowards(Tr.position,
-                jerkDirection, Time.deltaTime * jerkSpeed);
-            currJerkDuration += Time.deltaTime;
-            if (currJerkDuration >= jerkDurationMax)
+            currDashDuration += Time.deltaTime;
+            if (currDashDuration >= dashDurationMax)
             {
                 onionState = OnionState.OnCooldown;
-                currJerkDuration = 0;
+                currDashDuration = 0;
             }
         }
     }
-    protected override void HandleBehaviour()
+
+    private void CheckCanMove(Vector3 direction, float speed, out bool canMove)
     {
-        HandleJerkCooldown();
-        HandleJerkDuration();
-        jerkDirection = Target().position - transform.position;
-        if(onionState != OnionState.Idle)
-            return;
-        
-        if (IsReachedEndDistance())
+        float moveDistance = speed * Time.deltaTime;
+        canMove = true;
+    
+        Bounds bounds = coll.bounds;
+        RaycastHit2D[] raycastHits = Physics2D.CapsuleCastAll(bounds.center, bounds.size,
+            CapsuleDirection2D.Vertical, 0, direction, moveDistance, ObstaclesLayer());
+        foreach (RaycastHit2D hit in raycastHits)
         {
-            Jerk();
+            if (hit.collider.TryGetComponent(out PickableWeapon weapon))
+                continue;
+    
+            if (hit.collider.TryGetComponent(out PlayerMovement player) == false)
+            {
+                canMove = false;
+                break;
+            }
+    
+            canMove = true;
         }
     }
 
-    private void Jerk()
+    protected override void HandleBehaviour()
     {
-        OnJerkAction?.Invoke(this, EventArgs.Empty);
-        onionState = OnionState.Jerking;
+        HandleDashCooldown();
+        HandleDashDuration();
+        dashDirection = transform.position - Target().position;
+        if (onionState != OnionState.Idle)
+            return;
+
+        if (IsReachedEndDistance())
+        {
+            Dash();
+        }
+    }
+
+    private void Dash()
+    {
+        OnDashAction?.Invoke(this, EventArgs.Empty);
+        onionState = OnionState.Dashing;
     }
 
     private enum OnionState
     {
         Idle,
-        Jerking,
+        Dashing,
         OnCooldown
     }
 }

@@ -1,13 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
 [RequireComponent(typeof(OnionBehaviour))]
 public class OnionVisual : MonoBehaviour
 {
-    [SerializeField] private MMF_Player jerkFeedback;
+    [SerializeField] private MMF_Player dashFeedback;
     private OnionBehaviour onionBehaviour;
 
     private void Awake()
@@ -17,12 +15,12 @@ public class OnionVisual : MonoBehaviour
 
     private void Start()
     {
-        onionBehaviour.OnJerkAction += OnionBehaviourOnOnJerkAction;
+        onionBehaviour.OnDashAction += OnionBehaviourOnOnDashAction;
     }
 
-    private void OnionBehaviourOnOnJerkAction(object sender, EventArgs e)
+    private void OnionBehaviourOnOnDashAction(object sender, EventArgs e)
     {
-        jerkFeedback.PlayFeedbacks();
+        dashFeedback.PlayFeedbacks();
     }
     
 }

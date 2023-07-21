@@ -49,11 +49,11 @@ public class EnemyBehaviourHandler : MonoBehaviour
         EnemyHealth = GetComponent<EnemyHealthHandler>();
         Tr = GetComponent<Transform>();
         //StartCoroutine(HandlePatroling());
-        state = State.Patroling;
     }
 
     protected virtual void Start()
     {
+        state = State.Patroling;
         EnemyHealth.OnDieEvent += EnemyHealth_OnDieEvent;
         EnemyHealth.OnHitEvent += EnemyHealthOnOnHitEvent;
     }
@@ -66,6 +66,9 @@ public class EnemyBehaviourHandler : MonoBehaviour
 
     private void EnemyHealthOnOnHitEvent(object sender, EventArgs e)
     {
+        if(Target() != null)
+            return;
+        
         Transform player = PlayerMovement.Instance.transform;
         SetPlayer(player);
     }

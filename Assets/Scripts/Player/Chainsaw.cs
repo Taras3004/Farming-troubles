@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,16 +7,16 @@ public class Chainsaw : MonoBehaviour
     public event EventHandler OnStartedDamaging;
     public event EventHandler OnFinishedDamaging;
 
-    private List<EnemyHealthHandler> hittedEnemies = new List<EnemyHealthHandler>();
-    private float damagingDelayMax = 0.3f;
+    private List<EnemyHealthHandler> hitEnemies = new();
+    private readonly float damagingDelayMax = 0.3f;
     private float damagingDelay;
     private Color particlesColor;
 
-    private bool isDamaging()
+    private bool IsDamaging()
     {
-        return hittedEnemies != null;
+        return hitEnemies != null;
     }
-    public Color PariclesColor()
+    public Color ColorOfParticles()
     {
         return particlesColor;
     }
@@ -28,15 +27,15 @@ public class Chainsaw : MonoBehaviour
     }
     private void HandleDamaging()
     {
-        if (isDamaging() == false)
+        if (IsDamaging() == false)
             return;
 
         damagingDelay += Time.deltaTime;
         if(damagingDelay >= damagingDelayMax)
         {
-            for(int i = 0; i < hittedEnemies.Count; i ++)
+            for(int i = 0; i < hitEnemies.Count; i ++)
             {
-                hittedEnemies[i].Hit(GameInput.Instance.GetAimDirectionVector());
+                hitEnemies[i].Hit(GameInput.Instance.GetAimDirectionVector());
             }
             damagingDelay = 0;
         }
@@ -46,7 +45,7 @@ public class Chainsaw : MonoBehaviour
         if (collision.TryGetComponent(out EnemyHealthHandler enemyHealthHandler))
         {
             particlesColor = collision.GetComponent<EnemyHealthHandler>().BloodColor();
-            hittedEnemies.Add(enemyHealthHandler);
+            hitEnemies.Add(enemyHealthHandler);
             OnStartedDamaging?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -54,8 +53,8 @@ public class Chainsaw : MonoBehaviour
     {
         if (collision.TryGetComponent(out EnemyHealthHandler enemyHealthHandler))
         {
-            hittedEnemies.Remove(enemyHealthHandler);
-            if (hittedEnemies.Count == 0)
+            hitEnemies.Remove(enemyHealthHandler);
+            if (hitEnemies.Count == 0)
             {
                 OnFinishedDamaging?.Invoke(this, EventArgs.Empty);
             }

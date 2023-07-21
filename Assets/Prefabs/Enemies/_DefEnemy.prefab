@@ -404,7 +404,7 @@ MonoBehaviour:
         MaxVolume: 1
         MinPitch: 1
         MaxPitch: 1
-        SfxAudioMixerGroup: {fileID: 0}
+        SfxAudioMixerGroup: {fileID: -3165942800488051908, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
         Priority: 128
     - rid: 6185259102434754567
       type: {class: MMF_Blink, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks.MMTools}
@@ -1309,6 +1309,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3524793837484407326}
     m_Modifications:
+    - target: {fileID: 2045910641300425504, guid: 9990a83b35c07a64180984243d8fe204, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2045910641300425504, guid: 9990a83b35c07a64180984243d8fe204, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2045910641300425504, guid: 9990a83b35c07a64180984243d8fe204, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.43529415
+      objectReference: {fileID: 0}
     - target: {fileID: 4120650537548282349, guid: 9990a83b35c07a64180984243d8fe204, type: 3}
       propertyPath: m_RootOrder
       value: 3

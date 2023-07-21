@@ -1,13 +1,12 @@
 using System;
-using Lofelt.NiceVibrations;
 using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class PlayerVisual : MonoBehaviour
 {
     [SerializeField] private MMF_Player footstepFeedback;
-    [SerializeField] private MMF_Player hitFeedback;
-    [SerializeField] private MMF_Player jerkFeedback;
+    [SerializeField] private MMF_Player hitFeedback; 
+    [SerializeField] private MMF_Player dashFeedback;
     [SerializeField] private MMF_Player dieFeedback;
     [SerializeField] private MMF_Player pickupFeedback;
     [SerializeField] private MMF_Player dropFeedback;
@@ -17,10 +16,10 @@ public class PlayerVisual : MonoBehaviour
     private PlayerMovement playerMovement;
 
     private float footstepTimer;
-    private float footstepTimerMax = 0.5f;
+    private readonly float footstepTimerMax = 0.5f;
     
     private float nextSpawnDirtTime;
-    private float dirtSpawnRate = 0.2f;
+    private readonly float dirtSpawnRate = 0.2f;
 
     private void Awake()
     {
@@ -32,10 +31,10 @@ public class PlayerVisual : MonoBehaviour
     private void Start()
     {
         playerHealth.OnHealthDecreased += PlayerHealth_OnHealthDecreased;
-        playerWeaponHandler.OnWeaponPickupedAction += PlayerWeaponHandlerOnOnWeaponPickupedAction;
+        playerWeaponHandler.OnWeaponPickedAction += PlayerWeaponHandlerOnOnWeaponPickedAction;
         playerWeaponHandler.OnWeaponDroppedAction += PlayerWeaponHandlerOnOnWeaponDroppedAction;
-        playerMovement.OnJerkAction += PlayerMovementOnJerkAction;
-        PlayerHealth.Instance.OnDie += PlayerHealth_OnDie;
+        playerMovement.OnDashAction += PlayerMovementOnDashAction;
+        playerHealth.OnDie += PlayerHealth_OnDie;
     }
 
     private void PlayerHealth_OnDie(object sender, EventArgs e)
@@ -48,14 +47,14 @@ public class PlayerVisual : MonoBehaviour
         dropFeedback.PlayFeedbacks();
     }
 
-    private void PlayerWeaponHandlerOnOnWeaponPickupedAction(object sender, EventArgs e)
+    private void PlayerWeaponHandlerOnOnWeaponPickedAction(object sender, EventArgs e)
     {
         pickupFeedback.PlayFeedbacks();
     }
 
-    private void PlayerMovementOnJerkAction(object sender, EventArgs e)
+    private void PlayerMovementOnDashAction(object sender, EventArgs e)
     {
-        jerkFeedback.PlayFeedbacks();
+        dashFeedback.PlayFeedbacks();
     }
 
     private void PlayerHealth_OnHealthDecreased(object sender, EventArgs e)
@@ -86,6 +85,8 @@ public class PlayerVisual : MonoBehaviour
     
     private void TrySpawnDirtParticles()
     {
+        if (playerHealth.CurrentHealth() <= 0)
+            return;
         if (Time.time < nextSpawnDirtTime)
             return;
 

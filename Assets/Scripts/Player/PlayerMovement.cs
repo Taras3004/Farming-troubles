@@ -7,21 +7,22 @@ public class PlayerMovement : MonoBehaviour
     public static PlayerMovement Instance { get; private set; }
 
     [SerializeField] private Collider2D renderCollider;
-    public event EventHandler OnJerkAction;
+    public event EventHandler OnDashAction;
 
     private Rigidbody2D rb;
+    private PlayerHealth playerHealth;
 
-    private float moveSpeed = 5f;
-    private bool isWalking;
+    private readonly float moveSpeed = 5f;
+    private bool isCanWalk = true;
     private Vector3 moveDir;
 
-    private float jerkTimer;
-    private float jerkTimerMax = 1f;
-    private bool isCanJerk;
+    private readonly float dashTimerMax = 1f;
+    private float dashTimer;
+    private bool isCanDash;
 
     public bool IsWalking()
     {
-        return isWalking;
+        return moveDir != Vector3.zero;
     }
 
     public Vector3 GetMoveDir()
@@ -33,43 +34,66 @@ public class PlayerMovement : MonoBehaviour
     {
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     private void Start()
     {
         rb.freezeRotation = true;
-        GameInput.Instance.OnJerkAction += Instance_OnJerkAction;
+        GameInput.Instance.OnDashAction += InstanceOnDashAction;
+        playerHealth.OnDie += PlayerHealth_OnDie;
     }
 
-    private void Instance_OnJerkAction(object sender, System.EventArgs e)
+    private void PlayerHealth_OnDie(object sender, EventArgs e)
     {
-        Jerk();
+        moveDir = Vector3.zero;
+    }
+
+    private void InstanceOnDashAction(object sender, EventArgs e)
+    {
+        Dash();
     }
 
     private void Update()
     {
         HandleMovement();
-        HandleJerkCooldown();
+        HandleDashCooldown();
     }
 
-    private void HandleJerkCooldown()
+    public void DisableMovement()
     {
-        if (isCanJerk == false)
+        isCanWalk = false;
+    }
+
+    public void EnableMovement()
+    {
+        isCanWalk = true;
+    }
+    
+    private void HandleDashCooldown()
+    {
+        if (isCanDash == false)
         {
-            jerkTimer -= Time.deltaTime;
-            if (jerkTimer <= 0)
+            dashTimer -= Time.deltaTime;
+            if (dashTimer <= 0)
             {
-                isCanJerk = true;
+                isCanDash = true;
             }
         }
         else
         {
-            jerkTimer = jerkTimerMax;
+            dashTimer = dashTimerMax;
         }
     }
 
     private void HandleMovement()
     {
+        if (!isCanWalk)
+        {
+            moveDir = Vector3.zero;
+            return;
+        }
+        
         Vector2 inputVector = GameInput.Instance.GetPlayerMovementVectorNormalized();
 
         moveDir = new Vector3(inputVector.x, inputVector.y, 0);
@@ -101,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
             transform.position += moveDir * moveDistance;
         }
 
-        isWalking = moveDir != Vector3.zero;
+        
     }
 
     private void CheckCanMove(Vector3 direction, out bool canMove)
@@ -109,14 +133,16 @@ public class PlayerMovement : MonoBehaviour
         float moveDistance = moveSpeed * Time.deltaTime;
         canMove = true;
 
-        RaycastHit2D[] raycastHit = Physics2D.CapsuleCastAll(renderCollider.bounds.center, renderCollider.bounds.size,
+        RaycastHit2D[] raycastHits = Physics2D.CapsuleCastAll(renderCollider.bounds.center, renderCollider.bounds.size,
             CapsuleDirection2D.Vertical, 0, direction, moveDistance);
-        for (int i = 0; i < raycastHit.Length; i++)
+        foreach (RaycastHit2D hit in raycastHits)
         {
-            if (raycastHit[i].collider.TryGetComponent(out PickableWeapon weapon))
+            Collider2D hitCollider = hit.collider;
+            
+            if(hitCollider.isTrigger)
                 continue;
 
-            if (raycastHit[i].collider.TryGetComponent(out PlayerMovement player) == false)
+            if (hitCollider != null)
             {
                 canMove = false;
                 break;
@@ -126,20 +152,20 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Jerk()
+    private void Dash()
     {
-        if (isCanJerk == false)
+        if (isCanDash == false)
             return;
 
-        isCanJerk = false;
+        isCanDash = false;
         float force = 12.3004f;
 
-        Vector2 jerkDirection =
+        Vector2 dashDirection =
             GameInput.Instance.GetPlayerMovementVectorNormalized() != Vector2.zero
                 ? GameInput.Instance.GetPlayerMovementVectorNormalized()
                 : GameInput.Instance.GetAimDirectionVector();
 
-        OnJerkAction?.Invoke(this, EventArgs.Empty);
-        rb.AddForce(jerkDirection * force, ForceMode2D.Impulse);
+        OnDashAction?.Invoke(this, EventArgs.Empty);
+        rb.AddForce(dashDirection * force, ForceMode2D.Impulse);
     }
 }

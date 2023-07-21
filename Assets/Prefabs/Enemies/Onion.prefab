@@ -346,7 +346,7 @@ MonoBehaviour:
         SquashAndStretchTarget: {fileID: 4323477439165549963}
         Mode: 0
         Axis: 1
-        AnimateScaleDuration: 0.2
+        AnimateScaleDuration: 0.4
         RemapCurveZero: 1
         RemapCurveOne: 1.4
         Offset: 0
@@ -457,7 +457,7 @@ MonoBehaviour:
         AnimateRotationTarget: {fileID: 4323477439165549963}
         Mode: 1
         RotationSpace: 0
-        AnimateRotationDuration: 0.4
+        AnimateRotationDuration: 0.6
         RemapCurveZero: 0
         RemapCurveOne: 360
         AnimateX: 0
@@ -694,8 +694,16 @@ PrefabInstance:
       value: 0.6132619
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407314, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: m_Size.y
+      value: 0.67
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407314, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: m_Offset.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407314, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.09
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: loot

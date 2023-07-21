@@ -55,7 +55,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Jerk"",
+                    ""name"": ""Dash"",
                     ""type"": ""Button"",
                     ""id"": ""457da4d0-f2db-437b-9e6e-0ceae0c25129"",
                     ""expectedControlType"": ""Button"",
@@ -130,7 +130,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Jerk"",
+                    ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -298,7 +298,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
-        m_Player_Jerk = m_Player.FindAction("Jerk", throwIfNotFound: true);
+        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_DropWeapon = m_Player.FindAction("DropWeapon", throwIfNotFound: true);
         m_Player_PickupWeapon = m_Player.FindAction("PickupWeapon", throwIfNotFound: true);
         m_Player_ReloadWeapon = m_Player.FindAction("ReloadWeapon", throwIfNotFound: true);
@@ -367,7 +367,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Pause;
-    private readonly InputAction m_Player_Jerk;
+    private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_DropWeapon;
     private readonly InputAction m_Player_PickupWeapon;
     private readonly InputAction m_Player_ReloadWeapon;
@@ -379,7 +379,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
-        public InputAction @Jerk => m_Wrapper.m_Player_Jerk;
+        public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @DropWeapon => m_Wrapper.m_Player_DropWeapon;
         public InputAction @PickupWeapon => m_Wrapper.m_Player_PickupWeapon;
         public InputAction @ReloadWeapon => m_Wrapper.m_Player_ReloadWeapon;
@@ -402,9 +402,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
-            @Jerk.started += instance.OnJerk;
-            @Jerk.performed += instance.OnJerk;
-            @Jerk.canceled += instance.OnJerk;
+            @Dash.started += instance.OnDash;
+            @Dash.performed += instance.OnDash;
+            @Dash.canceled += instance.OnDash;
             @DropWeapon.started += instance.OnDropWeapon;
             @DropWeapon.performed += instance.OnDropWeapon;
             @DropWeapon.canceled += instance.OnDropWeapon;
@@ -430,9 +430,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
-            @Jerk.started -= instance.OnJerk;
-            @Jerk.performed -= instance.OnJerk;
-            @Jerk.canceled -= instance.OnJerk;
+            @Dash.started -= instance.OnDash;
+            @Dash.performed -= instance.OnDash;
+            @Dash.canceled -= instance.OnDash;
             @DropWeapon.started -= instance.OnDropWeapon;
             @DropWeapon.performed -= instance.OnDropWeapon;
             @DropWeapon.canceled -= instance.OnDropWeapon;
@@ -467,7 +467,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnJerk(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
         void OnDropWeapon(InputAction.CallbackContext context);
         void OnPickupWeapon(InputAction.CallbackContext context);
         void OnReloadWeapon(InputAction.CallbackContext context);

@@ -77,7 +77,15 @@ PrefabInstance:
       value: 0.57799095
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407314, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: m_Size.y
+      value: 0.57799095
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407314, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3524793837484407314, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
+      propertyPath: m_Offset.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
@@ -86,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 7710852127268621014, guid: 4772bcd897169f84c86b107f7a0bfe03, type: 3}
     - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: maxHealth
-      value: 7
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: bloodColor.b
@@ -114,7 +122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407324, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: maxSpeed
-      value: 1.5
+      value: 2.3
       objectReference: {fileID: 0}
     - target: {fileID: 3524793837484407326, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
       propertyPath: m_RootOrder
@@ -164,18 +172,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Beetroot
       objectReference: {fileID: 0}
-    - target: {fileID: 5942466624338001607, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.38823533
-      objectReference: {fileID: 0}
-    - target: {fileID: 5942466624338001607, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.34117648
-      objectReference: {fileID: 0}
-    - target: {fileID: 5942466624338001607, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.85098046
-      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3524793837484407313, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}
     m_RemovedGameObjects: []
@@ -220,7 +216,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   stopDistance: 3
-  startFollowDistance: 5
+  startFollowDistance: 7
 --- !u!4 &3398368196762638845 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3524793837249881610, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}

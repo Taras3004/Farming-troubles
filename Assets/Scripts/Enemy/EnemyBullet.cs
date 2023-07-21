@@ -17,6 +17,7 @@ public class EnemyBullet : MonoBehaviour
     {
         rb.gravityScale = 0f;
     }
+
     private void Update()
     {
         bulletLifetime += Time.deltaTime;
@@ -25,11 +26,11 @@ public class EnemyBullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     public void Setup(Vector3 shootDirection)
     {
         transform.right = shootDirection;
         rb.velocity = new Vector2(shootDirection.x, shootDirection.y).normalized * speed;
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,6 +40,10 @@ public class EnemyBullet : MonoBehaviour
             OnBulletHitted?.Invoke(this, EventArgs.Empty);
             rb.velocity = Vector2.zero;
             player.Hit();
+        }
+        else if (collision.TryGetComponent(out Obstacle obstacle))
+        {
+            Destroy(gameObject);
         }
     }
 }

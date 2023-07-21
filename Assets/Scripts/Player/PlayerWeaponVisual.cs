@@ -22,7 +22,7 @@ public class PlayerWeaponVisual : MonoBehaviour
 
         playerWeaponHandler.OnWeaponDropProgress += PlayerWeaponHandler_OnWeaponDropProgress;
         playerWeaponHandler.OnWeaponDroppedAction += PlayerWeaponHandler_OnWeaponDroppedAction;
-        playerWeaponHandler.OnWeaponPickupedAction += PlayerWeaponHandler_OnWeaponPickupedAction;
+        playerWeaponHandler.OnWeaponPickedAction += PlayerWeaponHandlerOnWeaponPickedAction;
         GameInput.Instance.OnDropWeaponFinishAction += GameInput_OnDropWeaponFinishAction;
         GameInput.Instance.OnDropWeaponStartAction += GameInput_OnDropWeaponStartAction;
 
@@ -36,13 +36,13 @@ public class PlayerWeaponVisual : MonoBehaviour
         UnsubscribeWeaponEvents();
     }
 
-    private void PlayerWeaponHandler_OnWeaponPickupedAction(object sender, System.EventArgs e)
+    private void PlayerWeaponHandlerOnWeaponPickedAction(object sender, EventArgs e)
     {
         SubscribeToWeaponEvents();
         UpdateAmmoText();
     }
 
-    private void PlayerWeaponHandler_OnWeaponDroppedAction(object sender, System.EventArgs e)
+    private void PlayerWeaponHandler_OnWeaponDroppedAction(object sender, EventArgs e)
     {
         UnsubscribeWeaponEvents();
     }
@@ -62,12 +62,12 @@ public class PlayerWeaponVisual : MonoBehaviour
     {
         ammoText.text = $"{playerWeaponHandler.GetCurrentWeapon().GetBulletAmount()} / {playerWeaponHandler.GetCurrentWeapon().GetBulletAmountBalance()}";
     }
-    private void PlayerVisual_OnReloadFinishedAction(object sender, System.EventArgs e)
+    private void PlayerVisual_OnReloadFinishedAction(object sender, EventArgs e)
     {
         reloadProgressSprite.gameObject.SetActive(false);
     }
 
-    private void PlayerVisual_OnReloadStartedAction(object sender, System.EventArgs e)
+    private void PlayerVisual_OnReloadStartedAction(object sender, EventArgs e)
     {
         reloadProgressSprite.gameObject.SetActive(true);
     }
@@ -79,16 +79,17 @@ public class PlayerWeaponVisual : MonoBehaviour
 
     private void UnsubscribeWeaponEvents()
     {
-        playerWeaponHandler.GetCurrentWeapon().OnBulletAmountChanged -= CurrentWeapon_OnBulletAmountChanged;
         ammoText.text = "";
+        if(playerWeaponHandler.GetCurrentWeapon() != null) 
+            playerWeaponHandler.GetCurrentWeapon().OnBulletAmountChanged -= CurrentWeapon_OnBulletAmountChanged;
     }
 
     private void CurrentWeapon_OnBulletAmountChanged(object sender, Weapon.OnBulletAmountChangedEventArgs e)
     {
-        ammoText.text = $"{e.amount} / {playerWeaponHandler.GetCurrentWeapon().GetBulletAmountBalance()}";
+        ammoText.text = $"{e.Amount} / {playerWeaponHandler.GetCurrentWeapon().GetBulletAmountBalance()}";
     }
 
-    private void GameInput_OnDropWeaponStartAction(object sender, System.EventArgs e)
+    private void GameInput_OnDropWeaponStartAction(object sender, EventArgs e)
     {
         if (playerWeaponHandler.IsFull())
         {
@@ -97,7 +98,7 @@ public class PlayerWeaponVisual : MonoBehaviour
         reloadProgressSprite.gameObject.SetActive(false);
     }
 
-    private void GameInput_OnDropWeaponFinishAction(object sender, System.EventArgs e)
+    private void GameInput_OnDropWeaponFinishAction(object sender, EventArgs e)
     {
         dropProgressSprite.gameObject.SetActive(false);
     }

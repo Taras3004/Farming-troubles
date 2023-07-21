@@ -1,5 +1,4 @@
 using System;
-using Pathfinding;
 using UnityEngine;
 
 public class EnemyWeaponHandler : MonoBehaviour
@@ -12,13 +11,13 @@ public class EnemyWeaponHandler : MonoBehaviour
     private EnemyHealthHandler enemyHealth;
     private Transform target;
     
-    private bool isDied = false;
-    private bool isPlayerFinded = false;
+    private bool isDied;
+    private bool isPlayerFound;
     private float aimAngle;
 
     private bool CanShoot()
     {
-        return isDied == false && isPlayerFinded == true && target != null;
+        return isDied == false && isPlayerFound && target != null;
     }
     public Vector2 DirToTarget()
     {
@@ -40,11 +39,12 @@ public class EnemyWeaponHandler : MonoBehaviour
     private void EnemyBehaviourHandlerOnOnFindPlayerAction(object sender, EventArgs e)
     {
         weaponObject.gameObject.SetActive(true);
-        isPlayerFinded = true;
+        isPlayerFound = true;
     }
 
-    private void EnemyHealth_OnDieEvent(object sender, System.EventArgs e)
+    private void EnemyHealth_OnDieEvent(object sender, EventArgs e)
     {
+        weaponObject.gameObject.SetActive(false);
         isDied = true;
     }
 
@@ -59,7 +59,7 @@ public class EnemyWeaponHandler : MonoBehaviour
     }
     private void HandleShooting()
     {
-        if (CanShootTarget() == true)
+        if (CanShootTarget())
         {
             Shoot();
         }
@@ -102,7 +102,7 @@ public class EnemyWeaponHandler : MonoBehaviour
     {
         weaponObject.right = target.position - transform.position;
     }
-    public void Shoot()
+    private void Shoot()
     {
         weapon.TryShoot();
     }

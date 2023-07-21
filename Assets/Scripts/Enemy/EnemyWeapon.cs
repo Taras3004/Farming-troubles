@@ -1,6 +1,4 @@
 using System;
-using System.Runtime.InteropServices.WindowsRuntime;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class EnemyWeapon : MonoBehaviour
@@ -31,7 +29,7 @@ public class EnemyWeapon : MonoBehaviour
     }
     private void HandleShooting()
     {
-        if (canShoot == true)
+        if (canShoot)
             return;
 
         currShootRate += Time.deltaTime;

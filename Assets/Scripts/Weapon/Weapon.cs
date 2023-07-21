@@ -13,20 +13,23 @@ public class Weapon : MonoBehaviour, IHasProgress
 
     public class OnWeaponShootEventArgs : EventArgs
     {
-        public Vector3 gunEndPointPosition;
-        public Vector3 shootDirection;
+        public Vector3 GunEndPointPosition;
+        public Vector3 ShootDirection;
     }
+
     public class OnBulletAmountChangedEventArgs : EventArgs
     {
-        public float amount;
-        public float bulletBalance;
+        public float Amount;
+        public float BulletBalance;
     }
 
     [SerializeField] private WeaponSO weaponSO;
+
     [SerializeField] protected Transform shotPosition;
+
     [SerializeField] protected Bullet bulletPrefab;
 
-    protected WeaponStats weaponStats;
+    protected WeaponStats WeaponStats;
     private int bulletAmountBalance;
     private int bulletAmount;
 
@@ -54,10 +57,11 @@ public class Weapon : MonoBehaviour, IHasProgress
     private void Awake()
     {
         bulletPrefab.gameObject.SetActive(false);
-        weaponStats = weaponSO.weaponStats;
-        reloadTimerMax = weaponStats.reloadTime;
-        bulletAmountBalance = weaponStats.maxBullets;
-        currShotRateTime = weaponStats.shotRate;
+        WeaponStats = weaponSO.weaponStats;
+        reloadTimerMax = WeaponStats.reloadTime;
+        bulletAmountBalance = WeaponStats.maxBullets;
+        bulletAmount = WeaponStats.capacity;
+        currShotRateTime = WeaponStats.shotRate;
     }
 
     private void Start()
@@ -99,7 +103,7 @@ public class Weapon : MonoBehaviour, IHasProgress
         //    return;
 
         currShotRateTime += Time.deltaTime;
-        if (currShotRateTime >= weaponStats.shotRate)
+        if (currShotRateTime >= WeaponStats.shotRate)
         {
             if (weaponState == WeaponState.Fire)
                 Shot();
@@ -123,7 +127,7 @@ public class Weapon : MonoBehaviour, IHasProgress
 
     private void GameInput_OnFireAction(object sender, EventArgs e)
     {
-        if (currShotRateTime >= weaponStats.shotRate && weaponState == WeaponState.Idle)
+        if (currShotRateTime >= WeaponStats.shotRate && weaponState == WeaponState.Idle)
         {
             weaponState = WeaponState.Fire;
             Shot();
@@ -145,8 +149,8 @@ public class Weapon : MonoBehaviour, IHasProgress
             return;
         OnFireAction?.Invoke(this, new OnWeaponShootEventArgs()
         {
-            gunEndPointPosition = shotPosition.position,
-            shootDirection = GameInput.Instance.GetAimDirectionVector()
+            GunEndPointPosition = shotPosition.position,
+            ShootDirection = GameInput.Instance.GetAimDirectionVector()
         });
 
         ShotBehaviour();
@@ -157,7 +161,7 @@ public class Weapon : MonoBehaviour, IHasProgress
 
         OnBulletAmountChanged?.Invoke(this, new OnBulletAmountChangedEventArgs
         {
-            amount = bulletAmount, bulletBalance = bulletAmountBalance
+            Amount = bulletAmount, BulletBalance = bulletAmountBalance
         });
         if (bulletAmount <= 0)
         {
@@ -170,7 +174,7 @@ public class Weapon : MonoBehaviour, IHasProgress
         GameObject tempBullet = Instantiate(bulletPrefab.gameObject, shotPosition.position, Quaternion.identity);
         tempBullet.SetActive(true);
         float directionAngle = GameInput.Instance.GetAimDirectionAngle();
-        float spread = weaponStats.spread;
+        float spread = WeaponStats.spread;
         float randomisedDirectionAngle = UnityEngine.Random.Range(directionAngle - spread, directionAngle + spread);
 
         Vector2 shootDirection = new Vector2
@@ -192,22 +196,35 @@ public class Weapon : MonoBehaviour, IHasProgress
     private void FinishReloading()
     {
         weaponState = WeaponState.Idle;
-        if (bulletAmountBalance > weaponStats.capacity)
+        if (bulletAmountBalance > WeaponStats.capacity)
         {
-            bulletAmountBalance = bulletAmountBalance + bulletAmount - weaponStats.capacity;
-            bulletAmount = weaponStats.capacity;
+            bulletAmountBalance = bulletAmountBalance + bulletAmount - WeaponStats.capacity;
+            bulletAmount = WeaponStats.capacity;
         }
         else
         {
-            bulletAmount = bulletAmountBalance;
-            bulletAmountBalance = 0;
+            if (bulletAmount + bulletAmountBalance > WeaponStats.capacity)
+            {
+                while (true)
+                {
+                    bulletAmount++;
+                    bulletAmountBalance--;
+                    if (bulletAmount == WeaponStats.capacity)
+                        break;
+                }
+            }
+            else
+            {
+                bulletAmount += bulletAmountBalance;
+                bulletAmountBalance = 0;
+            }
         }
 
         OnReloadFinishedAction?.Invoke(this, EventArgs.Empty);
         OnBulletAmountChanged?.Invoke(this, new OnBulletAmountChangedEventArgs
         {
-            amount = bulletAmount,
-            bulletBalance = bulletAmountBalance
+            Amount = bulletAmount,
+            BulletBalance = bulletAmountBalance
         });
     }
 

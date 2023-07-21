@@ -11,7 +11,7 @@ public class Shotgun : Weapon
             GameObject tempBullet = Instantiate(bulletPrefab.gameObject, shotPosition.position, Quaternion.identity);
             tempBullet.SetActive(true);
             float directionAngle = GameInput.Instance.GetAimDirectionAngle();
-            float spread = weaponStats.spread;
+            float spread = WeaponStats.spread;
             float randomisedDirectionAngle = UnityEngine.Random.Range(directionAngle - spread, directionAngle + spread);
 
             Vector2 shootDirection =  new Vector2

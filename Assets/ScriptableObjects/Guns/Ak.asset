@@ -17,8 +17,8 @@ MonoBehaviour:
   weaponStats:
     damage: 2
     capacity: 20
-    maxBullets: 60
-    shotRate: 0.2
+    maxBullets: 80
+    shotRate: 0.15
     reloadTime: 2
     playerSpeed: 0
     spread: 5

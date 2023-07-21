@@ -14,7 +14,7 @@ public class EnemyWholeMagazineWeapon : EnemyWeapon, IHasProgress
 
     private bool isReloading;
     private float reloadTimer;
-    private float reloadTimerMax = 5f;
+    private float reloadTimerMax = 3.5f;
 
     public EnemyHealthHandler EnemyHealth()
     {

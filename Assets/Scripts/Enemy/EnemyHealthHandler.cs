@@ -13,7 +13,6 @@ public class EnemyHealthHandler : MonoBehaviour
     [SerializeField] private EnemyLoot loot;
     private int currHealth;
     private Rigidbody2D rb;
-    private Collider2D coll;
 
     public Color BloodColor()
     {
@@ -21,7 +20,7 @@ public class EnemyHealthHandler : MonoBehaviour
     }
     private void Awake()
     {
-        coll = GetComponent<Collider2D>();
+        GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         currHealth = maxHealth;
     }
@@ -42,16 +41,16 @@ public class EnemyHealthHandler : MonoBehaviour
 
         BloodParticleSystemHandler.Instance.SpawnBlood(transform.position, shootDirection, bloodColor);
         
-        if (currHealth <= 0)
+        if (currHealth == 0)
         {
             Die(shootDirection);
         }
     }
     private void Die(Vector3 fallDirection)
     {
-        float force = UnityEngine.Random.Range(200, 400);
+        float force = Random.Range(200, 400);
         transform.right = fallDirection;
-        transform.Rotate(new Vector3(transform.position.x, transform.position.y, transform.position.z - 90));
+        transform.Rotate(new Vector3(0, 0, transform.rotation.z - 90));
         
         rb.AddForce(fallDirection * force);
         OnDieEvent?.Invoke(this, EventArgs.Empty);
