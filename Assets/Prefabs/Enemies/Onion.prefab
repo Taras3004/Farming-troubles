@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 215709231432849877}
   - component: {fileID: 3947491442503719813}
   m_Layer: 0
-  m_Name: JerkFeedback
+  m_Name: DashFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -859,7 +859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3424e2f8a002f714f8647f34d0ba3610, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jerkFeedback: {fileID: 3947491442503719813}
+  dashFeedback: {fileID: 3947491442503719813}
 --- !u!114 &4323477439176136968 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3524793837484407318, guid: 3f676e35d1a6bc04e92685abafdae132, type: 3}

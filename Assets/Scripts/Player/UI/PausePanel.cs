@@ -10,7 +10,6 @@ public class PausePanel : MonoBehaviour
     private const string SFX_MIXER_VOLUME = "SfxVolume";
     private const string MUSIC_MIXER_VOLUME = "MusicVolume";
 
-    [FormerlySerializedAs("playButton")]
     [Header("Buttons")] 
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button exitButton;
@@ -24,32 +23,42 @@ public class PausePanel : MonoBehaviour
 
     private void Start()
     {
-        float sfxVolume = PlayerPrefs.GetFloat(GamePlayerPrefs.SFX_VOLUME, 0.5f);
-        SetupSlider(sfxSlider, sfxVolume);
-        float musicVolume = PlayerPrefs.GetFloat(GamePlayerPrefs.MUSIC_VOLUME, 0.5f);
-        SetupSlider(sfxSlider, musicVolume);
+        InitializeVolume();
+        InitializeUIEvents();
+    }
 
+    private void InitializeUIEvents()
+    {
         resumeButton.onClick.AddListener(OnResumeButtonClicked);
         exitButton.onClick.AddListener(OnExitButtonClicked);
         sfxSlider.onValueChanged.AddListener(OnSfxSliderValueChanged);
         musicSlider.onValueChanged.AddListener(OnMusicSliderValueChanged);
     }
-
-    private void SetupSlider(Slider slider, float value)
+    private void InitializeVolume()
+    {
+        float sfxVolume = PlayerPrefs.GetFloat(GamePlayerPrefs.SFX_VOLUME, 0.5f);
+        SetupVolume(sfxSlider, SFX_MIXER_VOLUME, sfxVolume);
+        float musicVolume = PlayerPrefs.GetFloat(GamePlayerPrefs.MUSIC_VOLUME, 0.5f);
+        SetupVolume(musicSlider, MUSIC_MIXER_VOLUME, musicVolume);
+    }
+    private void SetupVolume(Slider slider, string audioMixerVolume, float value)
     {
         slider.value = value;
+        audioMixer.SetFloat(audioMixerVolume, value);
     }
 
     private void OnMusicSliderValueChanged(float value)
     {
         audioMixer.SetFloat(MUSIC_MIXER_VOLUME, Mathf.Log10(value) * 20);
         PlayerPrefs.SetFloat(GamePlayerPrefs.MUSIC_VOLUME, value);
+        PlayerPrefs.Save();
     }
 
     private void OnSfxSliderValueChanged(float value)
     {
         audioMixer.SetFloat(SFX_MIXER_VOLUME, Mathf.Log10(value) * 20);
         PlayerPrefs.SetFloat(GamePlayerPrefs.SFX_VOLUME, value);
+        PlayerPrefs.Save();
     }
 
     private void OnExitButtonClicked()

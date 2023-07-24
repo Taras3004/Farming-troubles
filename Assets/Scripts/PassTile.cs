@@ -31,14 +31,13 @@ public class PassTile : MonoBehaviour
         if (isLevelPassed)
         {
             int nextLevelName = currLevelName + 1;
-
-
-            var x = SceneUtility.GetScenePathByBuildIndex(nextLevelName);
-            Debug.Log(x);
-            if (x != "")
+            var scenePath = SceneUtility.GetScenePathByBuildIndex(nextLevelName);
+            
+            if (scenePath != "")
             {
                 SceneManager.LoadScene(nextLevelName);
                 PlayerPrefs.SetInt(GamePlayerPrefs.CURRENT_LEVEL_NAME, nextLevelName);
+                PlayerPrefs.Save();
             }
         }
     }

@@ -9,7 +9,7 @@ public class GameObserver : MonoBehaviour
     public event EventHandler OnLevelPassed;
     
     private EnemyHealthHandler[] enemies;
-    private List<EnemyHealthHandler> deadEnemies = new List<EnemyHealthHandler>();
+    private List<EnemyHealthHandler> deadEnemies = new();
 
     private void Awake()
     {
