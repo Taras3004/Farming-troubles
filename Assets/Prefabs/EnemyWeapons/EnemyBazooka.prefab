@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6094082378167955826, guid: 093ac584be568db419ec26afb0cce6d1, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 6094082378167955826, guid: 093ac584be568db419ec26afb0cce6d1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -635,7 +635,7 @@ PrefabInstance:
     - target: {fileID: 6206164349695065185, guid: 093ac584be568db419ec26afb0cce6d1, type: 3}
       propertyPath: managedReferences[7063013616548839428].SfxAudioMixerGroup
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: -3165942800488051908, guid: 7e984f512e89b60468e829489e8883e3, type: 2}
     - target: {fileID: 6206164349695065185, guid: 093ac584be568db419ec26afb0cce6d1, type: 3}
       propertyPath: managedReferences[7063013616548839424].MMChannelDefinition
       value: 

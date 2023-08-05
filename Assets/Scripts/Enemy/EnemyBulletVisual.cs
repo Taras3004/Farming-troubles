@@ -9,10 +9,10 @@ public class EnemyBulletVisual : MonoBehaviour
     private void Start()
     {
         enemyBullet = GetComponent<EnemyBullet>();
-        enemyBullet.OnBulletHitted += EnemyBullet_OnBulletHitted;
+        enemyBullet.OnBulletHit += EnemyBulletOnBulletHit;
     }
 
-    private void EnemyBullet_OnBulletHitted(object sender, System.EventArgs e)
+    private void EnemyBulletOnBulletHit(object sender, System.EventArgs e)
     {
         destroyFeedback.PlayFeedbacks();
     }

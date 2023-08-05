@@ -174,7 +174,7 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         Vector2 dropDir = (mousePosition - transform.position).normalized;
 
         GameObject pickableWeaponObject = currentWeapon.GetWeaponSO().pickableWeaponPrefab;
-        GameObject tempPickableObject = Instantiate(pickableWeaponObject, transform.position, Quaternion.identity);
+        GameObject tempPickableObject = Instantiate(pickableWeaponObject, weaponSpawnTransform.position, Quaternion.identity);
 
         Rigidbody2D tempPickableObjectRb = tempPickableObject.GetComponent<Rigidbody2D>();
         PickableWeapon tempPickableWeapon = tempPickableObject.GetComponent<PickableWeapon>();

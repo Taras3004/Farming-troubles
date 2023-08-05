@@ -34,7 +34,7 @@ public class CarrotBehaviour : EnemyBehaviourHandler
         {
             if (i.TryGetComponent(out PlayerHealth playerHealth))
             {
-                playerHealth.Hit();
+                playerHealth.Hit(Vector3.zero);
             }
         }
     }

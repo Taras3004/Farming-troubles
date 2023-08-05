@@ -1,4 +1,5 @@
 using System;
+using Pathfinding;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,6 +14,7 @@ public class EnemyHealthHandler : MonoBehaviour
     [SerializeField] private EnemyLoot loot;
     private int currHealth;
     private Rigidbody2D rb;
+    private AIDestinationSetter aiDestinationSetter;
 
     public Color BloodColor()
     {
@@ -20,7 +22,7 @@ public class EnemyHealthHandler : MonoBehaviour
     }
     private void Awake()
     {
-        GetComponent<Collider2D>();
+        aiDestinationSetter = GetComponent<AIDestinationSetter>();
         rb = GetComponent<Rigidbody2D>();
         currHealth = maxHealth;
     }
@@ -48,6 +50,8 @@ public class EnemyHealthHandler : MonoBehaviour
     }
     private void Die(Vector3 fallDirection)
     {
+        aiDestinationSetter.target = null;
+        
         float force = Random.Range(200, 400);
         transform.right = fallDirection;
         transform.Rotate(new Vector3(0, 0, transform.rotation.z - 90));

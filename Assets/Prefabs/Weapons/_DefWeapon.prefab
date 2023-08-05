@@ -5325,7 +5325,7 @@ MonoBehaviour:
   m_Intensity: 1.5
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000
+  m_ApplyToSortingLayers: 1dd1205900000000f1fd325eed46e3dc85992932
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -5428,7 +5428,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5502,6 +5502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c89f4f1928b9e44d90c385b806d6f91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponType: 0
   shotFeedback: {fileID: 2522307513761089895}
   reloadFeedback: {fileID: 3625952144632673445}
 --- !u!1 &8658781205419488116

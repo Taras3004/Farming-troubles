@@ -32,7 +32,7 @@ public class BloodParticleSystemHandler : MonoBehaviour
 
     public void SpawnBlood(Vector3 position, Vector3 direction, Color color)
     {
-        float bloodParticleCount = 3;
+        float bloodParticleCount = 4 ;
 
         for (int i = 0; i < bloodParticleCount; i++)
         {
@@ -70,12 +70,12 @@ public class BloodParticleSystemHandler : MonoBehaviour
 
         public void Update()
         {
-            position += direction * moveSpeed * Time.deltaTime;
+            position += direction * (moveSpeed * Time.deltaTime);
             rotation += 360f * (moveSpeed / 10f) * Time.deltaTime;
 
             meshParticleSystem.UpdateQuad(quadIndex, position, rotation, quadSize, false, uvIndex, color);
 
-            float slowDownFactor = 3.5f;
+            float slowDownFactor = 5f;
             moveSpeed -= moveSpeed * slowDownFactor * Time.deltaTime;
         }
 

@@ -47,16 +47,18 @@ public class PickableWeapon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent(out Obstacle obstacle))
+        if (other.TryGetComponent(out EnemyHealthHandler enemy))
         {
-            rb.velocity = Vector2.zero;
-        }
-        else if (other.TryGetComponent(out EnemyHealthHandler enemy))
-        {
-            if (GetSummaryVelocity() > 2f)
+            float damageableVelocity = 1.5f;
+            if (GetSummaryVelocity() > damageableVelocity)
             {
                 enemy.Hit(GameInput.Instance.GetAimDirectionVector());
             }
+        }
+
+        if (!other.TryGetComponent(out PlayerHealth player) && !other.isTrigger)
+        {
+            rb.velocity = Vector2.zero;
         }
     }
 }

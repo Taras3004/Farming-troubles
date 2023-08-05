@@ -12,22 +12,6 @@ PrefabInstance:
       propertyPath: weaponSO
       value: 
       objectReference: {fileID: 11400000, guid: ccc01103fc2374943a858ed9642b8af1, type: 2}
-    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
-      propertyPath: m_Size.x
-      value: 0.8058923
-      objectReference: {fileID: 0}
-    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
-      propertyPath: m_Size.y
-      value: 0.15424481
-      objectReference: {fileID: 0}
-    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
-      propertyPath: m_Offset.x
-      value: 0.097053856
-      objectReference: {fileID: 0}
-    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
-      propertyPath: m_Offset.y
-      value: 0.01802428
-      objectReference: {fileID: 0}
     - target: {fileID: 7444185685462550776, guid: cd20848582f4da0468345480e42ac871, type: 3}
       propertyPath: m_Sprite
       value: 

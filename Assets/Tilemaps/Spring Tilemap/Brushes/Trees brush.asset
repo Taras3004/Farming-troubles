@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Trees brush
   m_EditorClassIdentifier: 
   m_Cells:
-  - m_Tile: {fileID: 11400000, guid: 07823f55143303c489fc8c5b435f29b8, type: 2}
+  - m_Tile: {fileID: 11400000, guid: 0a4284272829d0e4d9811e93f254d5e9, type: 2}
     m_Matrix:
       e00: 1
       e01: 0
@@ -38,6 +38,9 @@ MonoBehaviour:
   m_FloodFillContiguousOnly: 1
   m_Anchor: {x: 0.5, y: 0.5, z: 0.5}
   m_Prefabs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 7152957736082064712, guid: 48def2971e2b92e4ab30b482e334dc11, type: 3}
   - {fileID: 2126260503565616316, guid: 03d93f963ab77ee4e827d0388307c764, type: 3}
   m_PerlinScale: 0.5

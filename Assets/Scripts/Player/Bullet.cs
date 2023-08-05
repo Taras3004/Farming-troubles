@@ -13,15 +13,17 @@ public class Bullet : MonoBehaviour
     {
         return shootDirection;
     }
-    
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
+
     private void Start()
     {
         rb.gravityScale = 0f;
     }
+
     public void Setup(Vector3 shootDirection)
     {
         float bulletSpeed = 30f;
@@ -34,16 +36,20 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Obstacle obstacle))
-        {
-            OnObstacleHit?.Invoke(this, EventArgs.Empty);
-            obstacle.Interact();
-            Destroy(gameObject);
-        }
-        else if (collision.TryGetComponent(out EnemyHealthHandler enemy))
+        if (collision.TryGetComponent(out EnemyHealthHandler enemy))
         {
             OnEnemyHit?.Invoke(this, EventArgs.Empty);
             enemy.Hit(shootDirection);
+            Destroy(gameObject);
+            return;
+        }
+
+        if (collision.TryGetComponent(out Obstacle obstacle))
+            obstacle.Interact();
+
+        if (!collision.isTrigger)
+        {
+            OnObstacleHit?.Invoke(this, EventArgs.Empty);
             Destroy(gameObject);
         }
     }

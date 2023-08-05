@@ -44,6 +44,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Obstacles
+    uniqueID: 1580400113
+    locked: 0
+  - name: Particles
+    uniqueID: 3705882349
+    locked: 0
   - name: Top
     uniqueID: 841587077
     locked: 0

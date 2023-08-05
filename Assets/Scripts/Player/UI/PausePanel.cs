@@ -1,7 +1,7 @@
+using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class PausePanel : MonoBehaviour
@@ -21,9 +21,11 @@ public class PausePanel : MonoBehaviour
     [Header(" ")] 
     [SerializeField] private AudioMixer audioMixer;
 
+
     private void Start()
     {
         InitializeVolume();
+        
         InitializeUIEvents();
     }
 
@@ -34,29 +36,34 @@ public class PausePanel : MonoBehaviour
         sfxSlider.onValueChanged.AddListener(OnSfxSliderValueChanged);
         musicSlider.onValueChanged.AddListener(OnMusicSliderValueChanged);
     }
+
     private void InitializeVolume()
     {
         float sfxVolume = PlayerPrefs.GetFloat(GamePlayerPrefs.SFX_VOLUME, 0.5f);
-        SetupVolume(sfxSlider, SFX_MIXER_VOLUME, sfxVolume);
+        SetupVolume(sfxSlider, sfxVolume, VolumeType.Sfx);
         float musicVolume = PlayerPrefs.GetFloat(GamePlayerPrefs.MUSIC_VOLUME, 0.5f);
-        SetupVolume(musicSlider, MUSIC_MIXER_VOLUME, musicVolume);
+        SetupVolume(musicSlider, musicVolume, VolumeType.Music);
     }
-    private void SetupVolume(Slider slider, string audioMixerVolume, float value)
+
+    private void SetupVolume(Slider slider, float value, VolumeType volumeType)
     {
         slider.value = value;
-        audioMixer.SetFloat(audioMixerVolume, value);
+        if (volumeType == VolumeType.Sfx)
+            MMSoundManager.Instance.SetVolumeSfx(value);
+        else if (volumeType == VolumeType.Music)
+            MMSoundManager.Instance.SetVolumeMusic(value);
     }
 
     private void OnMusicSliderValueChanged(float value)
     {
-        audioMixer.SetFloat(MUSIC_MIXER_VOLUME, Mathf.Log10(value) * 20);
+        MMSoundManager.Instance.SetVolumeMusic(value);
         PlayerPrefs.SetFloat(GamePlayerPrefs.MUSIC_VOLUME, value);
         PlayerPrefs.Save();
     }
 
     private void OnSfxSliderValueChanged(float value)
     {
-        audioMixer.SetFloat(SFX_MIXER_VOLUME, Mathf.Log10(value) * 20);
+        MMSoundManager.Instance.SetVolumeSfx(value);
         PlayerPrefs.SetFloat(GamePlayerPrefs.SFX_VOLUME, value);
         PlayerPrefs.Save();
     }
@@ -84,4 +91,10 @@ public class PausePanel : MonoBehaviour
         GameInput.Instance.EnablePlayerActions();
         PlayerMovement.Instance.EnableMovement();
     }
+}
+
+public enum VolumeType
+{
+    Sfx,
+    Music
 }

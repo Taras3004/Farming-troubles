@@ -32,22 +32,6 @@ PrefabInstance:
       propertyPath: weaponSO
       value: 
       objectReference: {fileID: 11400000, guid: b4ea1ca641fa6394281b8ccd8cdc2b54, type: 2}
-    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
-      propertyPath: m_Size.x
-      value: 0.46069974
-      objectReference: {fileID: 0}
-    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
-      propertyPath: m_Size.y
-      value: 0.2491939
-      objectReference: {fileID: 0}
-    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
-      propertyPath: m_Offset.x
-      value: 0.00093045086
-      objectReference: {fileID: 0}
-    - target: {fileID: 4794101336178664791, guid: cd20848582f4da0468345480e42ac871, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.009244978
-      objectReference: {fileID: 0}
     - target: {fileID: 5602415700915925643, guid: cd20848582f4da0468345480e42ac871, type: 3}
       propertyPath: m_Size.x
       value: 0.8811413
