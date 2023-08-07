@@ -7,6 +7,7 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
     public event EventHandler OnWeaponPickedAction;
     public event EventHandler<IHasProgress.OnProgressChangedEventArgs> OnWeaponDropProgress;
 
+    [SerializeField] private WeaponSO firstWeapon;
     [SerializeField] private Transform weaponSpawnTransform;
     [SerializeField] private Transform chainsawTransform;
 
@@ -32,10 +33,21 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
 
     private void Awake()
     {
+        SpawnFirstWeapon();
+        
         if (weaponSpawnTransform.GetChild(0).TryGetComponent(out Weapon weapon))
             currentWeapon = weapon;
     }
 
+    private void SpawnFirstWeapon()
+    {
+        if (firstWeapon != null)
+        {
+            var stats = firstWeapon.weaponStats;
+            PickupWeapon(firstWeapon, stats.capacity, stats.maxBullets);
+        }
+    }
+    
     private void Start()
     {
         GameInput.Instance.OnLookLeft += GameInput_OnLookLeft;
@@ -49,7 +61,8 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         OnWeaponPickedAction += PlayerWeaponHandlerOnWeaponPickedAction;
 
         PlayerHealth.Instance.OnDie += PlayerHealth_OnDie;
-
+        LevelReloader.Instance.OnLevelReloaded += LevelReloader_OnLevelReloaded;
+        
         if (IsFull())
         {
             chainsawTransform.gameObject.SetActive(false);
@@ -64,12 +77,19 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         }
     }
 
+    private void LevelReloader_OnLevelReloaded(object sender, EventArgs e)
+    {
+        weaponSpawnTransform.gameObject.SetActive(true);
+        SpawnFirstWeapon();
+    }
+
     private void PlayerHealth_OnDie(object sender, EventArgs e)
     {
         if (currentWeapon != null)
         {
             Destroy(currentWeapon.gameObject);
         }
+        
         weaponSpawnTransform.gameObject.SetActive(false);
     }
 
@@ -208,13 +228,13 @@ public class PlayerWeaponHandler : MonoBehaviour, IHasProgress
         }
     }
 
-    public void PickupWeapon(WeaponSO weaponSO, int bulletAmount, int bulletAmountMax)
+    public void PickupWeapon(WeaponSO weaponSO, int capacity, int bulletAmountMax)
     {
         GameObject weaponPrefab = weaponSO.weaponPrefab;
         GameObject tempWeapon = Instantiate(weaponPrefab, weaponSpawnTransform.position, new Quaternion(0, 0, 0, 0),
             weaponSpawnTransform);
         currentWeapon = tempWeapon.GetComponent<Weapon>();
-        currentWeapon.Setup(bulletAmount, bulletAmountMax);
+        currentWeapon.Setup(capacity, bulletAmountMax);
         OnWeaponPickedAction?.Invoke(this, EventArgs.Empty);
     }
     

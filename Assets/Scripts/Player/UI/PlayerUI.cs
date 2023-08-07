@@ -14,6 +14,12 @@ public class PlayerUI : MonoBehaviour
     private void Start()
     {
         PlayerHealth.Instance.OnDie += PlayerHealth_OnDie;
+        LevelReloader.Instance.OnLevelReloaded += LevelReloader_OnLevelReloaded;
+    }
+
+    private void LevelReloader_OnLevelReloaded(object sender, EventArgs e)
+    {
+        SetPanel(UIPanels.GamePanel);
     }
 
     private void PlayerHealth_OnDie(object sender, EventArgs e)

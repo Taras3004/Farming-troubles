@@ -1,13 +1,16 @@
 using System;
 using MoreMountains.Feedbacks;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerVisual : MonoBehaviour
 {
+    [SerializeField] private Light2D playerLight;
+    
+    [Header("Feedbacks")]
     [SerializeField] private MMF_Player footstepFeedback;
     [SerializeField] private MMF_Player hitFeedback; 
     [SerializeField] private MMF_Player dashFeedback;
-    [SerializeField] private MMF_Player dieFeedback;
     [SerializeField] private MMF_Player pickupFeedback;
     [SerializeField] private MMF_Player dropFeedback;
     
@@ -35,11 +38,17 @@ public class PlayerVisual : MonoBehaviour
         playerWeaponHandler.OnWeaponDroppedAction += PlayerWeaponHandlerOnOnWeaponDroppedAction;
         playerMovement.OnDashAction += PlayerMovementOnDashAction;
         playerHealth.OnDie += PlayerHealth_OnDie;
+        LevelReloader.Instance.OnLevelReloaded += LevelLoader_OnLevelReloaded;
+    }
+
+    private void LevelLoader_OnLevelReloaded(object sender, EventArgs e)
+    {
+        playerLight.gameObject.SetActive(true);
     }
 
     private void PlayerHealth_OnDie(object sender, EventArgs e)
     {
-        dieFeedback.PlayFeedbacks();
+        playerLight.gameObject.SetActive(false);
     }
 
     private void PlayerWeaponHandlerOnOnWeaponDroppedAction(object sender, EventArgs e)

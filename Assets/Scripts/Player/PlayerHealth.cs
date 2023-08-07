@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour, IResetable
 {
     public static PlayerHealth Instance;
 
@@ -13,8 +12,9 @@ public class PlayerHealth : MonoBehaviour
     private Rigidbody2D rb;
 
     [SerializeField] private SpriteRenderer render;
-    [SerializeField] private int maxHealth;
-    
+    private readonly int maxHealth = 5;
+
+    private Vector3 startPosition;
     private int currHealth;
 
     public int CurrentHealth()
@@ -27,24 +27,9 @@ public class PlayerHealth : MonoBehaviour
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
         currHealth = maxHealth;
+        startPosition = transform.position;
     }
-
-    private void Start()
-    {
-        OnDie += PlayerHealth_OnDie;
-    }
-
-    private void PlayerHealth_OnDie(object sender, EventArgs e)
-    {
-        GameInput.Instance.OnRespawnAction += InstanceOnOnRespawnAction;
-    }
-
-    private void InstanceOnOnRespawnAction(object sender, EventArgs e)
-    {
-        Scene scene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(scene.name);
-    }
-
+    
     public void Hit(Vector3 shootDirection)
     {
         if (currHealth <= 0)
@@ -71,5 +56,12 @@ public class PlayerHealth : MonoBehaviour
         render.transform.up = shootDirection;
         rb.AddForce(shootDirection * force, ForceMode2D.Impulse);
         OnDie?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void Reset()
+    {
+        currHealth = maxHealth;
+        transform.position = startPosition;
+        render.transform.up = new Vector3(0, 0, 0);
     }
 }

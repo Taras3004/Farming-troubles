@@ -1091,6 +1091,7 @@ MonoBehaviour:
   bloodColor: {r: 0, g: 0, b: 0, a: 0}
   maxHealth: 3
   loot: {fileID: 0}
+  render: {fileID: 3524793837436071574}
 --- !u!114 &3524793837484407313
 MonoBehaviour:
   m_ObjectHideFlags: 0

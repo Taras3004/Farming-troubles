@@ -4,7 +4,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class EnemyHealthHandler : MonoBehaviour
+public class EnemyHealthHandler : MonoBehaviour, IResetable
 {
     public event EventHandler OnHitEvent;
     public event EventHandler OnDieEvent;
@@ -12,9 +12,11 @@ public class EnemyHealthHandler : MonoBehaviour
     [SerializeField] private Color bloodColor;
     [SerializeField] private int maxHealth;
     [SerializeField] private EnemyLoot loot;
+    [SerializeField] private SpriteRenderer render;
     private int currHealth;
     private Rigidbody2D rb;
     private AIDestinationSetter aiDestinationSetter;
+    private Vector3 startPosition;
 
     public Color BloodColor()
     {
@@ -25,6 +27,7 @@ public class EnemyHealthHandler : MonoBehaviour
         aiDestinationSetter = GetComponent<AIDestinationSetter>();
         rb = GetComponent<Rigidbody2D>();
         currHealth = maxHealth;
+        startPosition = transform.position;
     }
     private void Start()
     {
@@ -33,7 +36,7 @@ public class EnemyHealthHandler : MonoBehaviour
 
     private void EnemyHealthHandler_OnDieEvent(object sender, EventArgs e)
     {
-        GameObserver.Instance.AddDeadEnemy(this);
+        LevelPassChecker.Instance.AddDeadEnemy(this);
     }
 
     public void Hit(Vector3 shootDirection)
@@ -63,5 +66,12 @@ public class EnemyHealthHandler : MonoBehaviour
             return;
         if(Random.value < 0.33f)
             Instantiate(loot, transform.position, Quaternion.identity);
+    }
+
+    public void Reset()
+    {
+        transform.position = startPosition;
+        render.transform.up = new Vector3(0, 0, 0);
+        currHealth = maxHealth;
     }
 }

@@ -11,7 +11,7 @@ public class PassTile : MonoBehaviour
 
     private void Start()
     {
-        GameObserver.Instance.OnLevelPassed += InstanceOnOnLevelPassed;
+        LevelPassChecker.Instance.OnLevelPassed += InstanceOnOnLevelPassed;
         currLevelName = PlayerPrefs.GetInt(GamePlayerPrefs.CURRENT_LEVEL_NAME, 1);
     }
 

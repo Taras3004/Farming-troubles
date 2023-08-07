@@ -1,15 +1,14 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PlayerAnimator : MonoBehaviour
 {
-    [FormerlySerializedAs("player")] [SerializeField] private PlayerMovement playerMovement;
-    private PlayerWeaponHandler playerWeaponAim;
+    [SerializeField] private PlayerMovement playerMovement;
 
     private SpriteRenderer spriteRenderer;
 
     private const string IS_WALKING = "IsWalking";
+    private const string IS_DIED = "IsDied";
 
     private Animator animator;
 
@@ -17,27 +16,35 @@ public class PlayerAnimator : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        playerWeaponAim = playerMovement.GetComponent<PlayerWeaponHandler>();
     }
     private void Start()
     {
         GameInput.Instance.OnLookRight += GameInput_OnLookRight;
         GameInput.Instance.OnLookLeft += GameInput_OnLookLeft;
-        PlayerHealth.Instance.OnDie += InstanceOnOnDie;
+        PlayerHealth.Instance.OnDie += PlayerHealth_OnDie;
+        LevelReloader.Instance.OnLevelReloaded += LevelReloader_OnLevelReloaded;
     }
 
-    private void InstanceOnOnDie(object sender, EventArgs e)
+    private void LevelReloader_OnLevelReloaded(object sender, EventArgs e)
     {
+        animator.SetBool(IS_DIED, false);
+        GameInput.Instance.OnLookRight += GameInput_OnLookRight;
+        GameInput.Instance.OnLookLeft += GameInput_OnLookLeft;
+    }
+
+    private void PlayerHealth_OnDie(object sender, EventArgs e)
+    {
+        animator.SetBool(IS_DIED, true);
         GameInput.Instance.OnLookRight -= GameInput_OnLookRight;
         GameInput.Instance.OnLookLeft -= GameInput_OnLookLeft;
     }
 
-    private void GameInput_OnLookLeft(object sender, System.EventArgs e)
+    private void GameInput_OnLookLeft(object sender, EventArgs e)
     {
         LookLeft();
     }
 
-    private void GameInput_OnLookRight(object sender, System.EventArgs e)
+    private void GameInput_OnLookRight(object sender, EventArgs e)
     {
         LookRight();
     }

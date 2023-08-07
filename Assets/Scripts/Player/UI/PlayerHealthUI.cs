@@ -7,29 +7,26 @@ public class PlayerHealthUI : MonoBehaviour
     [SerializeField] private PlayerHealthPoint healthPoint;
     [SerializeField] private PlayerHealth player;
 
-    private List<PlayerHealthPoint> healthPointsList = new List<PlayerHealthPoint>();
+    private List<PlayerHealthPoint> healthPointsList = new();
 
     private void Awake()
     {
         healthPoint.gameObject.SetActive(false);
     }
+
     private void Start()
     {
         CreateVisual();
+        LevelReloader.Instance.OnLevelReloaded += LevelLoader_OnLevelReloaded;
         player.OnHealthIncreased += Player_OnHealthIncreased;
         player.OnHealthDecreased += Player_OnHealthDecreased;
     }
-    private void Update()
+
+    private void LevelLoader_OnLevelReloaded(object sender, EventArgs e)
     {
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            DestroyHealthPoint();
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            AddHealthPoint();
-        }
+        CreateVisual();
     }
+
     private void Player_OnHealthDecreased(object sender, EventArgs e)
     {
         DestroyHealthPoint();
@@ -42,11 +39,17 @@ public class PlayerHealthUI : MonoBehaviour
 
     private void CreateVisual()
     {
-        for (int i = 0; i < player.CurrentHealth(); i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
-            CreateHealthPoint(out PlayerHealthPoint playerHealthPoint);
+            var child = transform.GetChild(i);
+            if(child == healthPoint.transform)
+                continue;
+            Destroy(child.gameObject);
         }
+        for (int i = 0; i < player.CurrentHealth(); i++)
+            CreateHealthPoint(out PlayerHealthPoint playerHealthPoint);
     }
+
     private void CreateHealthPoint(out PlayerHealthPoint playerHealthPoint)
     {
         PlayerHealthPoint tempHealthPoint = Instantiate(healthPoint, transform);
@@ -54,11 +57,13 @@ public class PlayerHealthUI : MonoBehaviour
         healthPointsList.Add(tempHealthPoint);
         tempHealthPoint.gameObject.SetActive(true);
     }
+
     private void AddHealthPoint()
     {
         CreateHealthPoint(out PlayerHealthPoint playerHealthPoint);
         playerHealthPoint.Initialize();
     }
+
     private void DestroyHealthPoint()
     {
         if (healthPointsList == null && player.CurrentHealth() <= 0)

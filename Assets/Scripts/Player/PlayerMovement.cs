@@ -42,11 +42,17 @@ public class PlayerMovement : MonoBehaviour
         rb.freezeRotation = true;
         GameInput.Instance.OnDashAction += InstanceOnDashAction;
         playerHealth.OnDie += PlayerHealth_OnDie;
+        LevelReloader.Instance.OnLevelReloaded += LevelReloader_OnLevelReloaded;
+    }
+
+    private void LevelReloader_OnLevelReloaded(object sender, EventArgs e)
+    {
+        EnableMovement();
     }
 
     private void PlayerHealth_OnDie(object sender, EventArgs e)
     {
-        moveDir = Vector3.zero;
+        DisableMovement();
     }
 
     private void InstanceOnDashAction(object sender, EventArgs e)
@@ -124,8 +130,6 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.position += moveDir * moveDistance;
         }
-
-        
     }
 
     private void CheckCanMove(Vector3 direction, out bool canMove)
@@ -147,7 +151,6 @@ public class PlayerMovement : MonoBehaviour
                 canMove = false;
                 break;
             }
-
             canMove = true;
         }
     }
